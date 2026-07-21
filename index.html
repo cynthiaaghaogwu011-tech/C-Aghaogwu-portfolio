@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cynthia .U. A. — Portfolio</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Lora (Editorial Serif), Inter (Clean Sans-Serif), & JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Lora:ital,wght@0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Lora', 'serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        brand: {
+                            navy: '#0A1120',      /* Upper section background */
+                            charcoal: '#0D0F12',  /* Lower portfolio background */
+                            border: '#1E293B',    /* Slate-800 subtle gridlines */
+                            textMuted: '#94A3B8'  /* Slate-400 readable copy */
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: black;
+        }
+    </style>
+</head>
+<body class="font-sans text-white antialiased selection:bg-slate-800 selection:text-white">
+
+    <!-- HERO & NAVIGATION WRAPPER (Deep Navy Backdrop) -->
+    <div class=" border-b border-brand-border/60">
+        
+        <!-- Navigation Header -->
+        <header class="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-6 flex items-center justify-between relative fixed top-0 z-50 bg-black">
+            <!-- Brand Logo -->
+            <a href="index.html" class="text-lg font-bold font-serif tracking-tight text-white hover:opacity-80 transition-opacity uppercase">
+                Cynthia .U. A.
+            </a>
+
+            <!-- Desktop Nav Menu -->
+            <nav class="hidden md:flex items-center space-x-8 text-sm font-medium uppercase">
+                <a href="index.html"  class="text-white font-semibold transition-colors uppercase">Home</a>
+                <a href="about.html" class="text-brand-textMuted hover:text-white transition-colors uppercase">About</a>
+                <a href="work.html" class="text-brand-textMuted hover:text-white transition-colors uppercase">Work</a>
+                <a href="services.html" class="text-brand-textMuted hover:text-white transition-colors uppercase">Services</a>
+                <a href="contact.html" class="text-brand-textMuted hover:text-white transition-colors uppercase">
+                    Contact
+                </a>
+                <a href="contact.html" class="uppercase bg-orange-500 rounded px-3 py-2 text-[12px]">Lets Talk</a>
+            </nav>
+
+            <!-- Mobile Hamburger Button -->
+            <button onclick="toggleMobileMenu()" class="block md:hidden text-slate-400 hover:text-white focus:outline-none">
+                <svg id="menuIcon" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+            </button>
+
+            <!-- Collapsible Mobile Nav Dropdown -->
+            <div id="mobileMenu" class="hidden absolute top-full left-0 right-0 bg-brand-navy border-b border-brand-border px-6 py-6 flex flex-col space-y-4 z-40 transition-all duration-300">
+                <a href="index.html" onclick="toggleMobileMenu()" class="text-white font-semibold transition-colors uppercase">Home</a>
+                <a href="about.html" onclick="toggleMobileMenu()" class="text-brand-textMuted hover:text-white text-base transition-colors uppercase">About</a>
+                <a href="work.html" onclick="toggleMobileMenu()" class="text-brand-textMuted hover:text-white text-base transition-colors uppercase">Work</a>
+                <a href="services.html" onclick="toggleMobileMenu()" class="text-brand-textMuted hover:text-white text-base transition-colors uppercase">Services</a>
+                <a href="contact.html" onclick="toggleMobileMenu()" class="inline-block w-full py-3 bg-white text-[#0A1120] font-medium text-center hover:bg-neutral-200 transition-colors uppercase">
+                    Contact
+                </a>
+            </div>
+        </header>
+
+        <!-- Hero Section -->
+        <section class="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 pt-16 pb-20 sm:pt-24 sm:pb-28 grid grid-cols-1 gap-8">
+            <div class="max-w-3xl space-y-6 sm:space-y-8">
+                <span class="block font-mono text-[10px] sm:text-xs tracking-[0.25em] text-brand-textMuted uppercase font-semibold">
+                    Web Developer
+                </span>
+                <h1 class="text-4xl sm:text-5xl lg:text-[64px] font-medium font-serif leading-[1.1] text-white tracking-tight">
+                    Building performant, accessible, and elegant web solutions.
+                </h1>
+                <p class="text-sm sm:text-base lg:text-lg text-brand-textMuted leading-relaxed max-w-2xl font-normal">
+                    I specialize in writing clean, maintainable code and architecting user-centered designs. Based in Abuja, I collaborate with teams globally to deliver high-quality digital experiences that scale.
+                </p>
+                <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-2">
+                    <a href="services.html" class="px-8 py-4 bg-orange-500 text-white text-[#0A1120] font-seriff text-xs tracking-wider uppercase font-bold text-center transition-colors rounded-none hover:bg-white hover:text-black">
+                        View Work
+                    </a>
+                    <a href="contact.html" class="px-8 py-4 border border-brand-border bg-transparent text-white font-seriff text-xs tracking-wider uppercase font-bold text-center transition-colors hover:border-white rounded-none">
+                        Contact Me
+                    </a>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- MAIN BODY CONTENT (About Me & Skills Component Split) -->
+    <section class="w-full bg-white">
+        <div  id="about" class="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-16 sm:py-24">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+            
+                <!-- Column 1: About Me -->
+                <div class="lg:col-span-7 space-y-4">
+                    <h2 class="text-sm md:text-base font-serif font-semibold text-black uppercase ">About </h2>
+                    <div class="w-24 border-b-4 border-gray-200 mb-8"></div>
+                    <h1 class="text-xl md:text-3xl font-serif font-semibold text-black">Frontend development with an eye for design.</h1>
+                    <p class="text-sm sm:text-base text-brand-textMuted leading-relaxed">
+                        I am a frontend developer driven by the challenge of building fast, accessible, and visually stunning web applications. My approach focuses on writing semantic HTML, crafting precise custom styling with Tailwind CSS, and implementing lightweight, performant JavaScript interactions that enhance the user experience without adding bloat.
+                    </p>
+                    <div class="">
+                        <a href="about.html" class="uppercase text-slate-900 text-sm font-medium  hover:text-orange-500 hover:border-b">
+                            Read More
+                        </a>
+                    </div>
+                </div>    
+            </div>
+        </div>
+    </section>
+    <!-- Services Component (Replicated visual hierarchy and content columns) -->
+    <section id="services" class="w-full bg-gray-100">
+        <div class="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-16 sm:py-24 w-full space-y-12 sm:space-y-16">
+            <!-- Section Intro Title -->
+            <div class="max-w-3xl space-y-4 text-left">
+                <h2 class="text-3xl sm:text-4xl font-serif font-semibold text-black tracking-tight">
+                    My Services
+                </h2>
+                <p class="text-sm sm:text-base text-brand-textMuted leading-relaxed font-normal">
+                    Specialized digital solutions tailored to help brands and products stand out in a competitive landscape.
+                </p>
+            </div>
+
+            <!-- 3-Column Service Card Grid (Responsive layout) -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+            
+                <!-- Card 1: Web Development -->
+                <article class="border border-gray-300 shadow bg-brand-card p-6 sm:p-8 flex flex-col h-full rounded transition-all duration-300 hover:shadow-lg">
+                    <!-- Monospace Tag Badge Placeholder -->
+                    <div class="mb-6">
+                        <span class="inline-block px-4 py-2 bg-brand-badge text-xs sm:text-sm font-mono tracking-wider text-brand-textMuted rounded-none select-none">
+                            code
+                        </span>
+                    </div>
+                
+                    <div class="space-y-3">
+                        <h3 class="text-lg sm:text-xl font-bold tracking-tight text-black">
+                            Web Development
+                        </h3>
+                        <p class="text-xs sm:text-sm text-brand-textMuted leading-relaxed">
+                            Building performant, scalable, and accessible web applications using modern technologies.
+                        </p>
+                    </div>
+                </article>
+
+                <!-- Card 2: UI/UX Design -->
+                <article class="border border-gray-300 shadow bg-brand-card p-6 sm:p-8 flex flex-col h-full rounded transition-all duration-300  hover:shadow-lg">
+                    <!-- Monospace Tag Badge Placeholder -->
+                    <div class="mb-6">
+                        <span class="inline-block px-4 py-2 bg-brand-badge text-xs sm:text-sm font-mono tracking-wider text-brand-textMuted rounded-none select-none">
+                            layout
+                        </span>
+                    </div>
+                
+                    <div class="space-y-3">
+                        <h3 class="text-lg sm:text-xl font-bold tracking-tight text-black">
+                            UI/UX Design
+                        </h3>
+                        <p class="text-xs sm:text-sm text-brand-textMuted leading-relaxed">
+                            Creating intuitive, user-centered interfaces with a focus on clean aesthetics and seamless interactions.
+                        </p>
+                    </div>
+                </article>
+
+                <!-- Card 3: Performance Optimization -->
+                <article class="border border-gray-300 shadow bg-brand-card p-6 sm:p-8 flex flex-col h-full rounded transition-all duration-300  hover:shadow-lg">
+                    <!-- Monospace Tag Badge Placeholder -->
+                    <div class="mb-6">
+                        <span class="inline-block px-4 py-2 bg-brand-badge text-xs sm:text-sm font-mono tracking-wider text-brand-textMuted rounded-none select-none">
+                            zap
+                        </span>
+                    </div>
+                
+                    <div class="space-y-3">
+                        <h3 class="text-lg sm:text-xl font-bold tracking-tight text-black">
+                            Performance Optimization
+                        </h3>
+                        <p class="text-xs sm:text-sm text-brand-textMuted leading-relaxed">
+                            Enhancing site speed, core web vitals, and overall user experience through technical refinement.
+                        </p>
+                    </div>
+                </article>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- WORK SECTION -->
+    <section id="projects" class="py-20 w-full bg-white">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="justify-between flex">
+                <h2 class="text-4xl font-bold mb-10 text-black">Selected Projects</h2>
+                <a href="work.html">
+                    <button class="text-normal md:text-lg font-bold mb-10 text-black inline-flex gap-2 items-center hover:text-orange-500">View All
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14m-6-6 6 6-6 6"/>
+                        </svg>
+                    </button>
+                </a>
+            </div>
+            <div class="grid md:grid-cols-2 lg:grid-cols gap-8">
+                <!-- Project Card -->
+                <div  class="py-4">
+                    <!--Project Image-->
+                    <div class="rounded-t-2xl shadow-lg overflow-hidden border-2 border-gray-200">
+                        <img src="Asset/image/j2Homes.png" alt="J2 Homes Website" class="rounded-t-2xl shadow-2xl hover:scale-105 transition duration-500">
+                    </div>
+                    <div class="p-6 bg-gray-100 rounded-b-xl">
+                        <h2 class="text-xl font-semibold text-black">J2 Homes</h2>
+                        <p class="text-gray-600 mt-3">A modern luxury real estate website showcasing apartments,bookings, amenities, and property listings.</p>
+                        <!--Technologies-->
+                        <div class="flex gap-2 flex-wrap mt-4 text-black">
+                            <span class="bg-white px-3 py-1 rounded shadow hover:bg-orange-500 hover:text-white">  HTML</span>
+                            <span class="bg-white px-3 py-1 rounded shadow hover:bg-orange-500 hover:text-white">  Tailwind CSS</span>
+                            <span class="bg-white px-3 py-1 rounded shadow hover:bg-orange-500 hover:text-white">  JavaScript</span>
+                            <span class="px-3 py-2 bg-white shadow rounded-lg hover:bg-orange-500 hover:text-white"> Responsive Design </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="stars-clothing" class="py-4">
+                    <!-- Project Image -->
+                    <div class="rounded-t-2xl shadow-lg overflow-hidden border-2 border-gray-200">
+                        <img src="Asset/image/starsclothings.png" alt="Stars Clothing Website" class="rounded-t-2xl shadow-2xl hover:scale-105 transition duration-500">
+                    </div>
+                    <!-- Project Details -->
+                    <div class="p-5 bg-gray-100 rounded-b-xl">
+                        
+                        <h2 class="text-xl font-bold mt-2 text-black"> Stars Clothing </h2>
+                        <p class="text-gray-600 mt-2 leading-relaxed">
+                            Stars Clothing is a modern fashion e-commerce website designed to deliver a clean and engaging online shopping experience. 
+                        </p>
+                        <!-- Technologies -->
+                        <div class="flex flex-wrap gap-3 mt-4 text-black">
+                            <span class="px-3 py-1 bg-white shadow rounded-lg rounded-lg hover:bg-orange-500 hover:text-white">HTML5</span>
+                            <span class="px-3 py-1 bg-white shadow rounded-lg rounded-lg hover:bg-orange-500 hover:text-white"> Tailwind CSS</span>
+                            <span class="px-3 py-1 bg-white shadow rounded-lg rounded-lg hover:bg-orange-500 hover:text-white"> JavaScript</span>
+                            <span class="px-3 py-1 bg-white shadow rounded-lg rounded-lg hover:bg-orange-500 hover:text-white"> Responsive Design </span>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- INLINE CONTACT SECTION -->
+    <section id="contact" class="w-full bg-black">
+        <div class="max-w-7xl mx-auto px-6 py-16 sm:py-24 space-y-8">
+            <div class="text-center space-y-2">
+                <span class="block font-seriff text-xl sm:text-xs tracking-[0.25em] text-gray-500 font-bold">Contact</span>
+                <h2 class="md:text-5xl sm:text-2xl font-serif fontbold text-white mb-3">Let's build something together.</h2>
+                <h4 class="block font-seriff text-[12px] sm:text-xs tracking-[0.25em] text-gray-500 font-bold mt-5">Have a project in mind? Let's talk about how we can bring it to life.</h4>
+            </div>
+            <div class="text-center mx-auto px-6 py-4 space-y-4">
+                <a href="contact.html" class="uppercase bg-orange-500 rounded px-3 py-2 text-[12px]">Get in Touch</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER BLOCK -->
+    <footer class="border-t border-gray-200 bg-gray-200">
+        <div class="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-10 flex flex-col md:flex-row items-center justify-between gap-6">
+            
+            <!-- Brand Logo -->
+            <a href="index.html" class="text-lg font-serif tracking-tight text-black font-bold hover:opacity-80 transition-opacity uppercase">
+                Cynthia .U. A.
+            </a>
+
+            <!-- Footer Navigation links -->
+            <nav class="flex flex-wrap justify-center gap-6 text-xs sm:text-sm text-brand-textMuted uppercase">
+                <a href="index.html" class="hover:text-black transition-colors uppercase font-bold">Home</a>
+                <a href="about.html" class="hover:text-black transition-colors uppercase">About</a>
+                <a href="work.html" class="hover:text-black transition-colors uppercase">Work</a>
+                <a href="services.html" class="hover:text-black transition-colors uppercase">Services</a>
+                <a href="contact.html" class="hover:text-black transition-colors uppercase">Contact</a>
+                
+            </nav>
+
+            <!-- Copyright Declaration -->
+            <span class="text-xs text-brand-textMuted text-center md:text-right">
+                © 2024 Cynthia .U. A. All rights reserved.
+            </span>
+
+        </div>
+    </footer>
+
+    <!-- JavaScript Mobile Drawer Toggle -->
+    <script>
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            const icon = document.getElementById('menuIcon');
+            
+            if (menu.classList.contains('hidden')) {
+                menu.classList.remove('hidden');
+                // Change hamburger icon to close 'X' representation
+                icon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />`;
+            } else {
+                menu.classList.add('hidden');
+                // Revert to original hamburger menu icon
+                icon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />`;
+            }
+        }
+
+        function handleContactSubmit(event) {
+            event.preventDefault();
+            const form = event.target;
+            const btn = form.querySelector('button[type="submit"]');
+            
+            btn.textContent = "SENDING...";
+            btn.disabled = true;
+
+            setTimeout(() => {
+                alert("Message transmission simulated successfully.");
+                form.reset();
+                btn.textContent = "SEND MESSAGE";
+                btn.disabled = false;
+            }, 800);
+        }
+    </script>
+</body>
+</html>

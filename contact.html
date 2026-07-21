@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cynthia .U. A. — Get In Touch</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter & JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        brand: {
+                            bg: '#090D16',       /* Deep dark navy/charcoal background */
+                            card: '#101524',     /* Sightly lighter container navy */
+                            input: '#080C14',    /* Deep input backdrop */
+                            border: '#1E293B',   /* Thin slate borders */
+                            textMuted: '#94A3B8'  /* Muted slate text details */
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #ffffff;
+        }
+    </style>
+</head>
+<body class="font-sans text-white antialiased selection:bg-slate-800 selection:text-white min-h-screen flex flex-col justify-between">
+
+    <!-- Header Navigation -->
+    <header class="border-b border-gray-border bg-brand-bg/85 backdrop-blur-md sticky top-0 z-50 bg-white">
+        <div class="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-5 flex items-center justify-between relative">
+            
+            <!-- Brand Logo with Menu Icon -->
+            <div class="flex items-center space-x-3">
+                <button onclick="toggleMobileMenu()" class="text-white hover:text-brand-textMuted focus:outline-none md:hidden">
+                    <svg id="menuIcon" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+                <a href="#" class="text-lg font-bold tracking-tight text-white hover:opacity-80 transition-opacity">
+                    Cynthia .U. A.
+                </a>
+            </div>
+
+            <!-- Desktop Nav Menu -->
+            <nav class="hidden md:flex items-center space-x-8 text-sm font-medium">
+                <a href="index.html" onclick="toggleMobileMenu()" class="text-brand-textMuted hover:text-black transition-colors">Home</a>
+                <a href="about.html" class="text-brand-textMuted hover:text-black transition-colors">About</a>
+                <a href="services.html" class="text-brand-textMuted hover:text-black transition-colors">Services</a>
+                <a href="work.html" class="text-brand-textMuted hover:text-black transition-colors">Work</a>
+                <a href="blog.html" class="text-brand-textMuted hover:text-white transition-colors">Blog</a>
+                <a href="contact.html" class="text-brand-textMuted font-bold text-base transition-colors">Contact</a>
+                <a href="tel:+2348105964473" class="uppercase bg-orange-500 hover:bg-orange-700 text-white rounded px-3 py-2 text-[12px]">Lets Talk</a>
+            </nav>
+
+            <!-- Collapsible Mobile Nav Dropdown -->
+            <div id="mobileMenu" class="hidden absolute top-full left-0 right-0 bg-brand-bg border-b border-brand-border px-6 py-6 flex flex-col space-y-4 z-40">
+                <a href="index.html" onclick="toggleMobileMenu()" class="text-white font-semibold transition-colors">Home</a>
+                <a href="about.html" onclick="toggleMobileMenu()" class="text-brand-textMuted hover:text-white transition-colors">About</a>
+                <a href="services.html" onclick="toggleMobileMenu()" class="text-brand-textMuted hover:text-white transition-colors">Services</a>
+                <a href="work.html" class="text-black hover:text-white transition-colors">Work</a>
+                <a href="blog.html" class="text-black hover:text-white transition-colors">Blog</a>
+                <a href="contact.html" onclick="toggleMobileMenu()" class="text-brand-textMuted font-semibold transition-colors">Contact</a>
+                
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Container (2-Column Grid) -->
+    <main class="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-12 sm:py-20 lg:py-24 flex-grow w-full">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+            
+            <!-- Left Column: Contact Information -->
+            <div class="lg:col-span-5 space-y-8">
+                
+                <div class="space-y-4">
+                    <span class="block font-seriff text-[10px] sm:text-xs tracking-[0.25em] text-brand-textMuted uppercase font-semibold">
+                        Available for hire
+                    </span>
+                    <h1 class="text-4xl sm:text-5xl lg:text-[56px] font-bold text-black leading-tight tracking-tight">
+                        Get In Touch
+                    </h1>
+                </div>
+
+                <!-- Functional Contact Links -->
+                <div class="space-y-4 font-sans text-sm sm:text-base">
+                    <a href="mailto:misscy007@gmail.com" class="flex items-center space-x-3 text-brand-textMuted hover:text-white transition-colors group">
+                        <!-- Icon: Envelope/Mail -->
+                        <svg class=" border border-gray-300 p-2w-5 h-5 group-hover:text-white transition-colors text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25H4.5a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
+                        </svg>
+                        <span class="hover:text-orange-500 text-black">cynthia@example.com</span>
+                    </a>
+                    <a href="tel:+2348105964473" class="flex items-center space-x-3 text-brand-textMuted hover:text-white transition-colors group">
+                        <!-- Phone -->
+                        <svg class="icon icon-phone border border-gray-300 p-2w-5 h-5 group-hover:text-white text-black transition-colors" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
+                        </svg>
+                        <span class=" text-black">08105964473</span>
+                    </a>
+                    <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="flex items-center space-x-3 text-brand-textMuted hover:text-white transition-colors group">
+                        <!-- Icon: Link/Chain -->
+                        <svg class=" border border-gray-300 p-2text-black w-5 h-5 group-hover:text-white transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244" />
+                        </svg>
+                        <span class=" text-black">LinkedIn</span>
+                    </a>
+
+                    <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="flex items-center space-x-3 text-brand-textMuted hover:text-white transition-colors group">
+                        <!-- Icon: Code Block / GitHub -->
+                        <svg class=" border border-gray-300 p-2w-5 text-slate-800 h-5 group-hover:text-white transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75L22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3l-4.5 16.5" />
+                        </svg>
+                        <span class=" text-black">GitHub</span>
+                    </a>
+                </div>
+                <div class="flex gap-3">
+                    <!-- GitHub -->
+                    <a href="" target="_blank" class="flex border border-gray-300 p-2 items-center space-x-3 text-brand-textMuted hover:text-white transition-colors group">
+                        <svg class="icon icon-github w-5 text-slate-800 h-5 group-hover:text-white transition-colors border-shadow-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+                        </svg>
+                    </a>
+                    <!-- Facebook -->
+                    <a href="" target="_blank" class="flex border border-gray-300 p-2 items-center space-x-3 text-brand-textMuted hover:text-white transition-colors group">
+                        <svg class="icon icon-facebook w-5 text-slate-800 h-5 group-hover:text-white transition-colors border-shadow-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
+                        </svg>
+                    </a>
+                    <!-- Instagram -->
+                    <a href="" target="_blank" class="flex border border-gray-300 p-2 items-center space-x-3 text-brand-textMuted hover:text-white transition-colors group">
+                        <svg class="icon icon-instagram w-5 text-slate-800 h-5 group-hover:text-white transition-colors border-shadow-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+                            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+                            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+                        </svg>
+                    </a>
+                    <!-- X / Twitter -->
+                    <a href="" target="_blank" class="flex border border-gray-300 p-2 items-center space-x-3 text-brand-textMuted hover:text-white transition-colors group">
+                        <svg class="icon icon-x w-5 text-slate-800 h-5 group-hover:text-white transition-colors border-shadow-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="4" y1="4" x2="20" y2="20"/>
+                            <line x1="20" y1="4" x2="4" y2="20"/>
+                        </svg>
+                    </a>
+                </div>
+
+                <!-- Divider -->
+                <hr class="border-gray-border/60" />
+
+                <!-- General Hire Copy -->
+                <p class="text-xs sm:text-sm text-brand-textMuted leading-relaxed max-w-sm">
+                    I am currently open to new opportunities and collaborations. Whether you have a project in mind or just want to connect, feel free to reach out.
+                </p>
+
+            </div>
+
+            <!-- Right Column: Form Container Card -->
+            <div class="lg:col-span-7 bg-white bg-orange-card  p-6 sm:p-10 rounded-none">
+                <form onsubmit="handleContactSubmit(event)" class="space-y-6">
+                    
+                    <!-- Top row: Name & Email inputs -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <!-- Full Name Field -->
+                        <div class="space-y-2">
+                            <label class="block font-mono text-xs text-brand-textMuted">Full Name</label>
+                            <input type="text" placeholder="John Doe" required 
+                                class="w-full p-4 bg-gray-100 border bordergray-border text-xs sm:text-sm text-white placeholder-slate-600 focus:outline-none focus:border-orange-400 rounded-none transition-colors">
+                        </div>
+
+                        <!-- Email Address Field -->
+                        <div class="space-y-2">
+                            <label class="block font-mono text-xs text-brand-textMuted">Email Address</label>
+                            <input type="email" placeholder="john@example.com" required 
+                                class="w-full p-4 bg-gray-100 border border-gray-border text-xs sm:text-sm text-white placeholder-slate-600 focus:outline-none focus:border-orange-400 rounded-none transition-colors">
+                        </div>
+                    </div>
+
+                    <!-- Textarea Details Field -->
+                    <div class="space-y-2">
+                        <label class="block font-mono text-xs text-brand-textMuted">Project Details</label>
+                        <textarea rows="6" placeholder="Briefly describe your project or inquiry..." required 
+                            class="w-full p-4 bg-gray-100 border border-gray-border text-xs sm:text-sm text-white placeholder-slate-600 focus:outline-none focus:border-orange-400 rounded-none transition-colors resize-none"></textarea>
+                    </div>
+
+                    <!-- Send Action Button -->
+                    <button type="submit" class="w-full py-4 bg-orange-500 hover:orange-300 text-white font-semibold text-sm tracking-wide transition-all duration-200 hover:bg-neutral-200 active:scale-[0.99] rounded-none flex items-center justify-center space-x-2">
+                        <span>Send Message</span>
+                        <span class="text-base">➔</span>
+                    </button>
+
+                </form>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Footer Block -->
+    <footer class="border-t border-gray-border bg-gray-200 mt-8">
+        <div class="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-8 flex flex-col md:flex-row items-center justify-between gap-6">
+            
+            <!-- Brand Logo -->
+            <a href="index.html" class="text-lg font-bold tracking-tight text-black hover:opacity-80 transition-opacity">
+                Cynthia .U. A.
+            </a>
+
+            <!-- Footer Quick Links -->
+            <nav class="flex flex-wrap justify-center gap-6 text-xs sm:text-sm text-brand-textMuted">
+                <a href="index.html" class="text-white font-semibold transition-colors">Home</a>
+                <a href="about.html" class="hover:text-white transition-colors">About</a>
+                <a href="about.html" class="hover:text-white transition-colors">Skills</a>
+                <a href="services.html" class="hover:text-white transition-colors">Services</a>
+                <a href="#contact" class="hover:text-white transition-colors">Contact</a>
+            </nav>
+
+            <!-- Copyright Statement -->
+            <span class="text-xs text-brand-textMuted text-center md:text-right font-mono">
+                © 2026 Cynthia .U. Aghaogwu. All rights reserved.
+            </span>
+
+        </div>
+    </footer>
+
+    <!-- Mobile Nav JavaScript Drawer Controls -->
+    <script>
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            const icon = document.getElementById('menuIcon');
+            
+            if (menu.classList.contains('hidden')) {
+                menu.classList.remove('hidden');
+                icon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />`;
+            } else {
+                menu.classList.add('hidden');
+                icon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />`;
+            }
+        }
+
+        function handleContactSubmit(event) {
+            event.preventDefault();
+            const form = event.target;
+            const btn = form.querySelector('button[type="submit"]');
+            
+            btn.innerHTML = `<span>SENDING...</span>`;
+            btn.disabled = true;
+
+            setTimeout(() => {
+                alert("Message simulated as successfully sent.");
+                form.reset();
+                btn.innerHTML = `<span>Send Message</span><span class="text-base">➔</span>`;
+                btn.disabled = false;
+            }, 800);
+        }
+    </script>
+</body>
+</html>

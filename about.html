@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cynthia .U. A. — About & Skills</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Lora (Editorial Serif), Inter (Sans-Serif), & JetBrains Mono (Monospace) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Lora:ital,wght@0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Lora', 'serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        brand: {
+                            navy: '#0A1120',      /* Master deep dark navy backdrop */
+                            badge: '#111A2E',     /* Dark slate blue badge fill */
+                            border: '#1E293B',    /* Thin container borders */
+                            textMuted: '#94A3B8'  /* Readable slate-gray details */
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #0A1120;
+        }
+    </style>
+</head>
+<body class=" bg-black font-sans text-white antialiased selection:bg-slate-800 selection:text-white min-h-screen flex flex-col justify-between">
+
+    <!-- Header Block -->
+    <header class="border-b border-gray-300 bg-[#0A1120]/80 backdrop-blur-md sticky top-0 z-50 bg-white">
+        <div class="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-5 flex items-center justify-between relative">
+            
+            <!-- Brand Logo -->
+            <a href="index.html" class="text-lg font-bold font-serif tracking-tight text-black hover:opacity-80 transition-opacity uppercase">
+                Cynthia .U. A.
+            </a>
+
+            <!-- Desktop Nav Menu -->
+            <nav class="hidden md:flex items-center space-x-8 text-sm font-medium">
+                <a href="index.html" class="text-black transition-colors uppercase">Home</a>
+                <a href="about.html" class="text-black font-bold transition-colors uppercase">About</a>
+                <a href="services.html" class="text-black hover:text-white transition-colors uppercase">Services</a>
+                <a href="work.html" class="text-black hover:text-white transition-colors uppercase">Work</a>
+                <a href="blog.html" class="text-black hover:text-white transition-colors uppercase">blog</a>
+                <a href="contact.html" class="px-5 py-2.5 bg-white text-[#0A1120] font-semibold hover:bg-neutral-200 transition-colors rounded-none uppercase">
+                    Contact
+                </a>
+                <a href="contact.html" class="uppercase bg-orange-500 rounded px-3 py-2 text-[12px]">Lets Talk</a>
+            </nav>
+
+            <!-- Mobile Hamburger Button -->
+            <button onclick="toggleMobileMenu()" class="block md:hidden text-slate-400 hover:text-white focus:outline-none">
+                <svg id="menuIcon" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+            </button>
+
+            <!-- Collapsible Mobile Nav Dropdown -->
+            <div id="mobileMenu" class="hidden absolute top-full left-0 right-0 bg-brand-navy border-b border-brand-border px-6 py-6 flex flex-col space-y-4 z-40">
+                <a href="index.html" onclick="toggleMobileMenu()" class="text-white font-semibold transition-colors">Home</a>
+                <a href="about.html" onclick="toggleMobileMenu()" class="text-white font-semibold transition-colors">About</a>
+                <a href="services.html" onclick="toggleMobileMenu()" class="text-brand-textMuted hover:text-white transition-colors">Services</a>
+                <a href="work.html" class="text-black hover:text-white transition-colors">work</a>
+                <a href="blog.html" class="text-black hover:text-white transition-colors">Blog</a>
+                <a href="contact.html" onclick="toggleMobileMenu()" class="inline-block w-full py-3 bg-white text-[#0A1120] font-semibold text-center hover:bg-neutral-200 transition-colors">
+                    Contact
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Isolated About & Skills Component Split -->
+    <section id="about-section" class="w-full bg-white">
+        <div class="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-16 sm:py-24 ">
+            
+            <!-- Column 1: About Me -->
+            <div class="">
+                <h2 class="text-2xl sm:text-3xl font-serif font-semibold text-black tracking-tight mb-4">
+                    About Me
+                </h2>
+                <p class="text-xs sm:text-sm md:text-base text-gray-500 leading-relaxed font-normal mb-3">
+                    I am a frontend developer driven by the challenge of building fast, accessible, and visually stunning web applications. My approach focuses on writing semantic HTML, crafting precise custom styling with Tailwind CSS, and implementing lightweight, performant JavaScript interactions that enhance the user experience without adding bloat.
+                </p>
+                <p class="text-xs sm:text-sm md:text-base text-gray-500 leading-relaxed font-normal mb-3">
+                    My work spans e-commerce platforms, admin dashboards internal tools for teams that need websites and software they can rely on. I care about how a system holds up under real usage as i do about how it looks on day one.
+                </p>
+                <p class="text-xs sm:text-sm md:text-base text-gray-500 leading-relaxed font-normal">
+                    Outside client work, I spend time refining the small details like error messages, loading states and empty states that most people never notice until they're missing.
+                </p>
+            </div>
+        </div>
+    </section>
+    <section class="w-full bg-gray-50">
+        <!--  Skills & Technologies -->
+        <div class="mt-8 max-w-7xl mx-auto px-6 sm:px-6 lg:px-12 py-12 max-w-7xl mx-auto">
+            <span class="py-2 mt-8 text-[10px] sm:text-xs font-bold tracking-wider text-gray-500 uppercase rounded-[3px] transition-colors hover:text-orange-500"> skills</span>
+            <div class="border-b-2 mt-2 border-gray-400 w-10 hover:orange-500"></div>
+            <h2 class="text-2xl mt-5 sm:text-3xl font-serif font-semibold text-black tracking-tight mb-5">
+                What I work with
+            </h2>
+            <!-- Fluid Wrap Tech Tag Grid -->
+            <div class="grid grid-col-2 gap-2.5">
+                <div class="mb-5 mt-5 justify-evenly">
+                    <span class="px-4 py-2 border border-gray-400 bg-white hover:bg-orange-500 hover:text-white hover:border-none text-[10px] sm:text-xs font-bold tracking-wider text-gray-500 uppercase rounded-[3px] transition-colors hover:border-slate-500">
+                        HTML5
+                    </span>
+                    <span class="px-4 py-2 border border-gray-400 bg-white hover:bg-orange-500 hover:text-white hover:border-none  text-[10px] sm:text-xs font-bold tracking-wider text-gray-500 uppercase rounded-[3px] transition-colors hover:border-slate-500">
+                        CSS3
+                    </span>
+                    <span class="px-4 py-2 border border-gray-400 bg-white hover:bg-orange-500 hover:text-white hover:border-none  text-[10px] sm:text-xs font-bold tracking-wider text-gray-500 uppercase rounded-[3px] transition-colors hover:border-slate-500">
+                        JavaScript (ES6+)
+                    </span>
+                    </div>
+                    <div>
+                    <span class="px-4 py-2 border border-gray-400 bg-white hover:bg-orange-500 hover:text-white hover:border-none  text-[10px] sm:text-xs font-bold tracking-wider text-gray-500 uppercase rounded-[3px] transition-colors hover:border-slate-500">
+                        Tailwind CSS
+                    </span>
+                    <span class="px-4 py-2 border border-gray-400 bg-white hover:bg-orange-500 hover:text-white hover:border-none  text-[10px] sm:text-xs font-bold tracking-wider text-gray-500 uppercase rounded-[3px] transition-colors hover:border-slate-500">
+                        Git
+                    </span>
+                    <span class="px-4 py-2 border border-gray-400 bg-white hover:bg-orange-500 hover:text-white hover:border-none text-[10px] sm:text-xs font-bold tracking-wider text-gray-500 uppercase rounded-[3px] transition-colors hover:border-slate-500">
+                        Responsive Design
+                    </span>
+                    <span class="px-4 py-2 border border-gray-400 bg-white hover:bg-orange-500 hover:text-white hover:border-none text-[10px] sm:text-xs font-bold tracking-wider text-gray-500 uppercase rounded-[3px] transition-colors hover:border-slate-500">
+                        Web Accessibility
+                    </span>
+                    </div>
+                </div>
+            </div>
+    </section>
+    <section id="experience" class=" bg-white">
+        <div class="max-w-7xl mx-automax-w-7xl mx-auto px-6 sm:px-6 lg:px-10 py-14 sm:py-24 ">
+            <!-- Section Heading -->
+            <div class="mb-16">
+                <p class="text-gray-400 font-semibold uppercase tracking-widest">  Experience </p>
+                <div class="border-b-2 mt-2 mb-5 border-gray-400 w-10 "></div>
+                    <h2 class="text-4xl font-bold mt-3 text-black"> Where I've worked</h2>
+                </div>
+                <!-- Experience Card -->
+                <div class="bg-white rounded-2xl border border-gray-200 shadow-lg p-8 hover:shadow-xl transition">
+                    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                <div>
+                <h3 class="text-2xl text-black font-bold">
+                    Frontend Developer Intern
+                </h3>
+                <p class="text-lg text-gray-700 font-medium mt-1">
+                    Codecraft Developers
+                </p>
+            </div>
+
+            <span class="inline-block bg-gray-100 text-gray-700 px-4 py-2 rounded-full text-sm font-medium">
+                February 2, 2026 – July 31, 2026
+            </span>
+        </div>
+    </div>
+
+  </div>
+</section>
+
+    <!-- Footer Area -->
+    <footer class="border-t border-gray-200 bg-gray-200">
+        <div class="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-8 flex flex-col md:flex-row items-center justify-between gap-6">
+            
+            <!-- Brand Logo -->
+            <a href="index.html" class="text-lg font-bold font-serif tracking-tight text-black hover:opacity-80 transition-opacity">
+                Cynthia .U. A.
+            </a>
+
+            <!-- Footer Links -->
+            <nav class="flex flex-wrap justify-center gap-6 text-xs sm:text-sm text-brand-textMuted">
+                <a href="index.html" onclick="toggleMobileMenu()" class="text-brand-textMuted hover:text-black transition-colors uppercase">Home</a>
+                <a href="about.html" class="text-brand-textMuted hover:text-black transition-colors uppercase font-bold">About</a>
+                <a href="services.html" class="text-brand-textMuted hover:text-black transition-colors uppercase">Services</a>
+                <a href="work.html" class="text-brand-textMuted hover:text-black transition-colors uppercase">Work</a>
+                <a href="blog.html" class="text-brand-textMuted hover:text-black transition-colors uppercase">Blog</a>
+                <a href="contact.html" class="text-brand-textMuted hover:text-black transition-colors uppercase">Contact</a>
+            </nav>
+
+            <!-- Copyright statement -->
+            <span class="text-xs text-brand-textMuted text-center md:text-right">
+                © 2024 Cynthia .U. A. All rights reserved.
+            </span>
+
+        </div>
+    </footer>
+
+    <!-- JavaScript Mobile menu drawer controller -->
+    <script>
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            const icon = document.getElementById('menuIcon');
+            
+            if (menu.classList.contains('hidden')) {
+                menu.classList.remove('hidden');
+                icon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />`;
+            } else {
+                menu.classList.add('hidden');
+                icon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />`;
+            }
+        }
+    </script>
+</body>
+</html>
