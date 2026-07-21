@@ -35,27 +35,28 @@
     </script>
     <style>
         body {
-            background-color: #0A1120;
+            background-color: #ffffff;
         }
     </style>
 </head>
-<body class="font-sans text-white antialiased selection:bg-slate-800 selection:text-white min-h-screen flex flex-col justify-between">
+<body class="font-sans text-white  flex flex-col min-h-screen mb-0">
 
     <!-- Header Block -->
-    <header class="border-b border-brand-border/40 bg-brand-navy/80 backdrop-blur-md sticky top-0 z-50">
+    <header class="border-b border-gray-200 bg-white backdrop-blur-md sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-5 flex items-center justify-between relative">
             
             <!-- Brand Logo -->
-            <a href="#" class="text-lg font-bold font-serif tracking-tight text-white hover:opacity-80 transition-opacity">
+            <a href="#" class="text-lg font-bold font-serif tracking-tight text-black hover:opacity-80 transition-opacity">
                 Cynthia .U. A.
             </a>
 
             <!-- Desktop Nav Menu -->
             <nav class="hidden md:flex items-center space-x-8 text-sm font-medium">
-                <a href="about.html" class="text-brand-textMuted hover:text-white transition-colors">About</a>
-                <a href="#services" class="text-white font-semibold transition-colors">Services</a>
-                <a href="work.html" class="text-brand-textMuted hover:text-white transition-colors">Work</a>
-                <a href="contact.html" class="text-brand-textMuted hover:text-white transition-colors">
+                <a href="index.html" class="text-brand-textMuted hover:text-white transition-colors uppercase">Home</a>
+                <a href="about.html" class="text-brand-textMuted hover:text-white transition-colors uppercase">About</a>
+                <a href="#services" class="text-brand-textMuted font-bold font-semibold transition-colors uppercase">Services</a>
+                <a href="work.html" class="text-brand-textMuted hover:text-white transition-colors uppercase">Work</a>
+                <a href="contact.html" class="text-brand-textMuted hover:text-white transition-colors uppercase">
                     Contact
                 </a>
                 <a href="contact.html" class="uppercase bg-orange-500 rounded px-3 py-2 text-[12px]">Lets Talk</a>
@@ -70,6 +71,7 @@
 
             <!-- Collapsible Mobile Nav Dropdown -->
             <div id="mobileMenu" class="hidden absolute top-full left-0 right-0 bg-brand-navy border-b border-brand-border px-6 py-6 flex flex-col space-y-4 z-40">
+                <a href="index.html" onclick="toggleMobileMenu()" class="text-brand-textMuted hover:text-white transition-colors">Home</a>
                 <a href="about.html" onclick="toggleMobileMenu()" class="text-brand-textMuted hover:text-white transition-colors">About</a>
                 <a href="#services" onclick="toggleMobileMenu()" class="text-white font-semibold transition-colors">Services</a>
                 <a href="work.html" onclick="toggleMobileMenu()" class="text-brand-textMuted hover:text-white transition-colors">Work</a>
@@ -80,14 +82,14 @@
         </div>
     </header>
 
-    <section id="services" class="w-full bg-gray-100">
+    <section id="services" class="w-full bg-white flex-grow">
         <div class="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-16 sm:py-24 w-full space-y-12 sm:space-y-16">
             <!-- Section Intro Title -->
             <div class="max-w-3xl space-y-4 text-left">
                 <h2 class="text-3xl sm:text-4xl font-serif font-semibold text-black tracking-tight">
                     My Services
                 </h2>
-                <p class="text-sm sm:text-base text-brand-textMuted leading-relaxed font-normal">
+                <p class="text-sm sm:text-base text-gray-500 leading-relaxed font-normal">
                     Specialized digital solutions tailored to help brands and products stand out in a competitive landscape.
                 </p>
             </div>
@@ -96,10 +98,10 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
             
                 <!-- Card 1: Web Development -->
-                <article class="border border-gray-300 shadow bg-brand-card p-6 sm:p-8 flex flex-col h-full rounded transition-all duration-300 hover:shadow-lg">
+                <article class="border border-gray-300 shadow bg-gray-100 p-6 sm:p-8 flex flex-col h-full rounded transition-all duration-300 hover:shadow-lg">
                     <!-- Monospace Tag Badge Placeholder -->
                     <div class="mb-6">
-                        <span class="inline-block px-4 py-2 bg-brand-badge text-xs sm:text-sm font-mono tracking-wider text-brand-textMuted rounded-none select-none">
+                        <span class="inline-block px-4 py-2 bg-gray-200 text-xs sm:text-sm font-bold tracking-wider text-gray-500 select-none shadow rounded hover:bg-orange-500 hover:text-white">
                             code
                         </span>
                     </div>
@@ -108,17 +110,17 @@
                         <h3 class="text-lg sm:text-xl font-bold tracking-tight text-black">
                             Web Development
                         </h3>
-                        <p class="text-xs sm:text-sm text-brand-textMuted leading-relaxed">
+                        <p class="text-xs sm:text-sm text-gray-500 leading-relaxed">
                             Building performant, scalable, and accessible web applications using modern technologies.
                         </p>
                     </div>
                 </article>
 
                 <!-- Card 2: UI/UX Design -->
-                <article class="border border-gray-300 shadow bg-brand-card p-6 sm:p-8 flex flex-col h-full rounded transition-all duration-300  hover:shadow-lg">
+                <article class="border border-gray-300 shadow bg-gray-100 p-6 sm:p-8 flex flex-col h-full rounded transition-all duration-300  hover:shadow-lg">
                     <!-- Monospace Tag Badge Placeholder -->
                     <div class="mb-6">
-                        <span class="inline-block px-4 py-2 bg-brand-badge text-xs sm:text-sm font-mono tracking-wider text-brand-textMuted rounded-none select-none">
+                        <span class="inline-block px-4 py-2 bg-gray-200 text-xs sm:text-sm font-bold tracking-wider text-gray-500 select-none shadow rounded hover:bg-orange-500 hover:text-white">
                             layout
                         </span>
                     </div>
@@ -127,17 +129,17 @@
                         <h3 class="text-lg sm:text-xl font-bold tracking-tight text-black">
                             UI/UX Design
                         </h3>
-                        <p class="text-xs sm:text-sm text-brand-textMuted leading-relaxed">
+                        <p class="text-xs sm:text-sm text-gray-500 leading-relaxed">
                             Creating intuitive, user-centered interfaces with a focus on clean aesthetics and seamless interactions.
                         </p>
                     </div>
                 </article>
 
                 <!-- Card 3: Performance Optimization -->
-                <article class="border border-gray-300 shadow bg-brand-card p-6 sm:p-8 flex flex-col h-full rounded transition-all duration-300  hover:shadow-lg">
-                    <!-- Monospace Tag Badge Placeholder -->
+                <article class="border border-gray-300 shadow bg-gray-100 p-6 sm:p-8 flex flex-col h-full rounded transition-all duration-300  hover:shadow-lg">
+                    <!--  Tag Badge Placeholder -->
                     <div class="mb-6">
-                        <span class="inline-block px-4 py-2 bg-brand-badge text-xs sm:text-sm font-mono tracking-wider text-brand-textMuted rounded-none select-none">
+                        <span class="inline-block px-4 py-2 bg-gray-200 text-xs sm:text-sm font-bold tracking-wider text-gray-500 select-none shadow rounded hover:bg-orange-500 hover:text-white">
                             zap
                         </span>
                     </div>
@@ -146,7 +148,7 @@
                         <h3 class="text-lg sm:text-xl font-bold tracking-tight text-black">
                             Performance Optimization
                         </h3>
-                        <p class="text-xs sm:text-sm text-brand-textMuted leading-relaxed">
+                        <p class="text-xs sm:text-sm text-gray-500 leading-relaxed">
                             Enhancing site speed, core web vitals, and overall user experience through technical refinement.
                         </p>
                     </div>
@@ -156,20 +158,21 @@
         </div>
     </section>
     <!-- Footer Area -->
-    <footer class="border-t border-brand-border/60 bg-[#080D1A] w-full">
+    <footer class="border-t border-gray-200 bg-gray-100 w-full mb-0">
         <div class="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-8 flex flex-col md:flex-row items-center justify-between gap-6">
             
             <!-- Brand Logo -->
-            <a href="#" class="text-lg font-bold font-serif tracking-tight text-white hover:opacity-80 transition-opacity">
+            <a href="#" class="text-lg font-bold font-serif tracking-tight text-black hover:opacity-80 transition-opacity">
                 Cynthia .U. A.
             </a>
 
             <!-- Footer Navigation links -->
-            <nav class="flex flex-wrap justify-center gap-6 text-xs sm:text-sm text-brand-textMuted">
-                <a href="about.html" class="hover:text-white transition-colors">About</a>
-                <a href="services.html" class="hover:text-white transition-colors">Services</a>
-                <a href="work.html" class="hover:text-white transition-colors">Work</a>
-                <a href="contact.html" class="hover:text-white transition-colors">Contact</a>
+            <nav class="flex flex-wrap justify-center gap-6 text-xs sm:text-sm text-brand-textMuted uppercase">
+                <a href="index.html" class="hover:text-white transition-colors uppercase">Home</a>
+                <a href="about.html" class="hover:text-white transition-colors uppercase">About</a>
+                <a href="services.html" class="hover:text-white transition-colors uppercase">Services</a>
+                <a href="work.html" class="hover:text-white transition-colors uppercase">Work</a>
+                <a href="contact.html" class="hover:text-white transition-colors uppercase">Contact</a>
             </nav>
 
             <!-- Copyright statement -->
