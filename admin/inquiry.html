@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en" class="h-screen overflow-hidden">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CUA Admin — Inbox Inquiries</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter & JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        brand: {
+                            bg: '#080C14',        /* Base deep backdrop */
+                            card: '#0D111A',      /* Dark slate navy containers */
+                            sidebar: '#0A0E15',   /* Darkest slate for sidebar */
+                            border: '#151F32',    /* Thin structural border slate */
+                            textMuted: '#8E9BB0'  /* Readable slate details */
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom thin scrollbar */
+        ::-webkit-scrollbar {
+            width: 4px;
+            height: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #080C14;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #151F32;
+        }
+    </style>
+</head>
+<body class="font-sans text-white antialiased selection:bg-slate-800 selection:text-white h-screen flex overflow-hidden bg-brand-bg">
+
+    <!-- 1. Left Sidebar Navigation Column (Collapsible) -->
+    <aside id="sidebar" class="fixed inset-y-0 left-0 z-50 w-64 bg-brand-sidebar border-r border-brand-border flex flex-col justify-between transform -translate-x-full lg:translate-x-0 lg:static transition-transform duration-300 ease-in-out shrink-0 h-full">
+        <div class="flex flex-col">
+            <!-- Brand Logo Area -->
+            <div class="h-16 px-6 border-b border-brand-border flex items-center justify-between">
+                <span class="font-mono text-sm font-bold tracking-wider uppercase text-white">CUA ADMIN</span>
+                <button onclick="toggleSidebar()" class="lg:hidden text-brand-textMuted hover:text-white">
+                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Sidebar Nav Links -->
+            <nav class="p-4 space-y-1">
+                <!-- Dashboard -->
+                <a href="dashboard.html" class="flex items-center space-x-3 px-4 py-3 text-brand-textMuted hover:text-white hover:bg-white/5 transition-all font-mono text-xs sm:text-sm tracking-wider uppercase font-medium rounded-none">
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25z" />
+                    </svg>
+                    <span>Dashboard</span>
+                </a>
+
+                <!-- Projects -->
+                <a href="projectmanager.html" class="flex items-center space-x-3 px-4 py-3 text-brand-textMuted hover:text-white hover:bg-white/5 transition-all font-mono text-xs sm:text-sm tracking-wider uppercase font-medium rounded-none">
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12.75V12A2.25 2.25 0 014.5 9.75h15A2.25 2.25 0 0121.75 12v.75m-19.5 0A2.25 2.25 0 004.5 15h15a2.25 2.25 0 002.25-2.25" />
+                    </svg>
+                    <span>Projects</span>
+                </a>
+
+                <!-- Inquiries (ACTIVE STATE) -->
+                <a href="inquiry.html" class="flex items-center space-x-3 px-4 py-3 bg-[#151F32]/60 text-white font-mono text-xs sm:text-sm tracking-wider uppercase font-medium rounded-none">
+                    <svg class="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25H4.5a2.25 2.25 0 01-2.25-2.25V6.75" />
+                    </svg>
+                    <span>Inquiries</span>
+                </a>
+
+                <!-- Settings -->
+                <a href="settings.html" class="flex items-center space-x-3 px-4 py-3 text-brand-textMuted hover:text-white hover:bg-white/5 transition-all font-mono text-xs sm:text-sm tracking-wider uppercase font-medium rounded-none">
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94" />
+                    </svg>
+                    <span>Settings</span>
+                </a>
+            </nav>
+        </div>
+
+        <!-- Sidebar User Card Info -->
+        <div class="p-4 border-t border-brand-border">
+            <div class="flex items-center space-x-3">
+                <div class="w-9 h-9 bg-brand-border flex items-center justify-center font-mono font-bold text-xs select-none">U</div>
+                <div>
+                    <h6 class="font-mono text-xs font-bold uppercase tracking-wider text-white">ADMIN_USER</h6>
+                    <span class="block font-mono text-[9px] text-brand-textMuted">v1.0.42</span>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Master Shell wrapper for Headers and content streams -->
+    <div class="flex-1 flex flex-col h-full overflow-hidden">
+        
+        <!-- Search Navigation Header -->
+        <header class="h-16 border-b border-brand-border px-6 flex items-center justify-between bg-brand-sidebar shrink-0">
+            <div class="flex items-center space-x-4">
+                <button onclick="toggleSidebar()" class="lg:hidden text-brand-textMuted hover:text-white">
+                    <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+                <div class="flex items-center space-x-3 text-xs sm:text-sm text-brand-textMuted font-mono">
+                    <svg class="w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.637 10.637z" />
+                    </svg>
+                    <span>Press <kbd class="px-1.5 py-0.5 bg-brand-border border border-slate-700/60 rounded-sm text-[10px] text-white">/</kbd> to search</span>
+                </div>
+            </div>
+
+            <div class="flex items-center space-x-4">
+                <button class="text-brand-textMuted hover:text-white transition-colors">
+                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75V9" />
+                    </svg>
+                </button>
+                <div class="w-8 h-8 rounded-full bg-brand-border flex items-center justify-center font-mono font-bold text-xs">A</div>
+            </div>
+        </header>
+
+        <!-- Core Split Screen View Container -->
+        <div class="flex-1 flex overflow-hidden relative">
+
+            <!-- 2. Middle Panel: Inbox List Stream -->
+            <section id="inbox-list" class="w-full md:w-[350px] lg:w-[380px] border-r border-brand-border flex flex-col shrink-0 h-full bg-[#0A0E17]">
+                <!-- Panel Header Information -->
+                <div class="p-6 border-b border-brand-border space-y-4">
+                    <div class="flex items-center justify-between">
+                        <h2 class="text-lg font-bold tracking-tight text-white">Inbox</h2>
+                        <span id="contact-count" class="px-2 py-0.5 bg-[#151F32] text-[9px] font-mono tracking-wider text-brand-textMuted uppercase rounded-none">  0 contacts</span>
+                    </div>
+
+                    <!-- Search Box -->
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 pl-3 flex items-center">
+                            <svg class="w-3.5 h-3.5 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.637 10.637z" />
+                            </svg>
+                        </span>
+                        <input type="text" placeholder="Search inquiries..." class="w-full pl-9 pr-3 py-2 bg-brand-bg border border-brand-border text-xs text-white placeholder-slate-600 focus:outline-none focus:border-slate-500 rounded-none transition-colors">
+                    </div>
+
+                    <!-- Filters System -->
+                    <div class="flex items-center space-x-2 text-[10px] font-mono uppercase tracking-wider">
+                        <button class="px-3 py-1 bg-white text-[#080C14] font-bold">ALL</button>
+                        <button class="px-3 py-1 border border-brand-border text-brand-textMuted hover:text-white hover:bg-white/5">Unread</button>
+                        <button class="px-3 py-1 border border-brand-border text-brand-textMuted hover:text-white hover:bg-white/5">Flagged</button>
+                    </div>
+                </div>
+                <div id="contact-list" class="flex-grow overflow-y-auto divide-y divide-brand-border/40">
+
+                </div>
+                
+            </section>
+
+            <!-- 3. Right Panel: Selected Message Reader (Hidden on mobile unless selected) -->
+            <section id="message-view" class="hidden md:flex flex-1 flex-col h-full bg-[#080C14] overflow-hidden absolute md:static inset-0 z-30">
+                
+                <!-- Message Header / Control Toolbar Row -->
+                <div class="p-6 border-b border-brand-border flex items-center justify-between shrink-0 bg-[#0A0E17]/60">
+                    <div class="flex items-center space-x-3">
+                        <!-- Mobile Back button (Shows only on mobile viewports) -->
+                        <button onclick="backToList()" class="md:hidden text-brand-textMuted hover:text-white mr-1">
+                            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                            </svg>
+                        </button>
+                        <h2 id="view-subject" class="text-lg sm:text-xl font-bold tracking-tight text-white leading-tight">
+                            Enterprise License Inquiry
+                        </h2>
+                    </div>
+
+                    <!-- Quick Icon Action Buttons -->
+                    <div class="flex items-center space-x-1.5">
+                        <!-- Flag -->
+                        <button class="p-2 border border-brand-border bg-brand-card hover:bg-[#151F32]/40 text-brand-textMuted hover:text-white transition-all rounded-none">
+                            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M3 3v1.5M3 21v-6m0 0l2.77-.693a9 9 0 016.208.682l.108.054a9 9 0 006.086.71l3.114-.732a48.524 48.524 0 01-.005-10.499l-3.11.732a9 9 0 01-6.085-.711l-.108-.054a9 9 0 00-6.208-.682L3 4.5M3 15V4.5" />
+                            </svg>
+                        </button>
+                        <!-- Envelope -->
+                        <button class="p-2 border border-brand-border bg-brand-card hover:bg-[#151F32]/40 text-brand-textMuted hover:text-white transition-all rounded-none">
+                            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25H4.5a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25" />
+                            </svg>
+                        </button>
+                        <!-- Archive -->
+                        <button class="p-2 border border-brand-border bg-brand-card hover:bg-[#151F32]/40 text-brand-textMuted hover:text-white transition-all rounded-none">
+                            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z" />
+                            </svg>
+                        </button>
+                        <!-- Trash -->
+                        <button id="delete-contact-button" class="p-2 border border-brand-border bg-brand-card hover:bg-[#151F32]/40 text-brand-textMuted hover:text-red-500 transition-all rounded-none">
+                            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-1.816A2.25 2.25 0 0122.16 5.79H2.25a2.25 2.25 0 011.07-1.916V5.79M16.5 13.5v-2.25a2.25 2.25 0 00-2.25-2.25h-4.5a2.25 2.25 0 00-2.25 2.25v2.25" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Message Body scroll wrapper -->
+                <div class="flex-grow overflow-y-auto p-6 space-y-6">
+                    
+                    <!-- Sender metadata details row -->
+                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-brand-border pb-6">
+                        <div class="flex items-center space-x-3">
+                            <div id="view-avatar" class="w-10 h-10 bg-brand-border flex items-center justify-center font-mono font-bold text-sm">
+                                
+                            </div>
+                            <div>
+                                <h3 id="view-sender-name" class="text-sm font-bold text-white"></h3>
+                                <span id="view-sender-meta" class="block font-mono text-[10px] text-brand-textMuted leading-relaxed">
+                                    
+                                </span>
+                            </div>
+                        </div>
+                        <div class="text-left sm:text-right font-mono text-[10px] text-brand-textMuted space-y-0.5">
+                            <span class="block">Oct 14, 2023, 10:42 AM</span>
+                            <span class="block text-brand-textMuted/70">(2 hours ago)</span>
+                        </div>
+                    </div>
+
+                    <!-- Main Text content container -->
+                    <div id="view-body" class="text-xs sm:text-sm text-[#D1D5DB] leading-relaxed space-y-4">
+                        <p></p>
+                        
+                    </div>
+                </div>
+
+                <!-- Footer Text Reply input field box -->
+                <div class="p-6 border-t border-brand-border bg-[#0A0E17]/60 shrink-0">
+                    <form onsubmit="handleSendReply(event)" class="border border-brand-border bg-brand-bg rounded-none">
+                        <textarea id="reply-input" rows="4" placeholder="Type your reply to Sarah Jenkins..." required class="w-full p-4 bg-transparent text-xs sm:text-sm text-white placeholder-slate-600 focus:outline-none resize-none"></textarea>
+                        
+                        <!-- Mini toolbar panel -->
+                        <div class="px-4 py-3 border-t border-brand-border/60 flex items-center justify-between">
+                            <div class="flex items-center space-x-3 text-slate-500">
+                                <button type="button" class="hover:text-white transition-colors">
+                                    <!-- Attachment Paperclip -->
+                                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L10.5 11.25" />
+                                    </svg>
+                                </button>
+                                <button type="button" class="hover:text-white transition-colors">
+                                    <!-- Document template list -->
+                                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
+                                    </svg>
+                                </button>
+                            </div>
+
+                            <button type="submit" class="px-5 py-2.5 bg-white text-[#080C14] font-mono text-xs tracking-wider uppercase font-bold hover:bg-neutral-200 transition-colors rounded-none flex items-center space-x-2">
+                                <span>Send Reply</span>
+                                <span class="text-[10px]">➔</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Active dynamic content state mapper database -->
+    <script>
+        let selectedContactId = null;
+        let selectedContactRow = null;
+        let selectedContactEmail = null;
+        
+        // Returning to inbox view on mobile
+        function backToList() {
+            const viewPanel = document.getElementById('message-view');
+            viewPanel.classList.add('hidden');
+            viewPanel.classList.remove('flex');
+        }
+
+        // Toggle left sidebar drawer
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            if (sidebar.classList.contains('-translate-x-full')) {
+                sidebar.classList.remove('-translate-x-full');
+            } else {
+                sidebar.classList.add('-translate-x-full');
+            }
+        }
+
+        //reply message submission
+        async function handleSendReply(event) {
+            event.preventDefault();
+            const textarea = document.getElementById('reply-input');
+            const replyMessage = textarea.value;
+            const submitBtn = event.target.querySelector('button[type="submit"]');
+            if (!selectedContactId) {
+                alert("Please select a contact first.");
+                return;
+            }
+            if (!replyMessage.trim()) {  //If the reply contains no actual text, stop.
+                alert("Please enter a reply.");
+                return;
+            }
+
+            submitBtn.innerHTML = `<span>SENDING...</span>`;
+            submitBtn.disabled = true;
+            const response = await fetch("http://localhost:3000/api/contact/reply", {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({
+                    contactId: selectedContactId,
+                    email: selectedContactEmail,
+                    message: replyMessage
+                })
+            });
+        }
+
+        function selectContact(contact, contactRow) {
+            selectedContactId = contact._id;
+            selectedContactRow = contactRow;
+            selectedContactEmail = contact.email;
+
+            document.getElementById("view-subject").innerText = "contact Inquiry";
+            document.getElementById("view-sender-name").innerText = contact.name;
+            document.getElementById("view-sender-meta").innerText = contact.email;
+            document.getElementById("view-body").innerText = contact.message;
+            document.getElementById("view-avatar").innerText = contact.name.charAt(0).toUpperCase();
+            document.getElementById("reply-input").placeholder = `Type your reply to ${contact.name}...`;
+            const viewPanel = document.getElementById("message-view");
+            viewPanel.classList.remove("hidden");
+            viewPanel.classList.add("flex");
+        }
+
+        document.getElementById("delete-contact-button").addEventListener("click", async() => {
+            if (!selectedContactId) {
+                alert("Please select a contact first.");
+                return;
+            }
+            const confirmed = confirm("Are you sure you want to delete this contact?");
+            if(!confirmed) {
+                return;
+            }
+            const response = await fetch(`http://localhost:3000/api/contact/${selectedContactId}`,
+                {method: "DELETE"}
+            );
+            const result = await response.json();
+            console.log(result);
+            if (response.ok) {
+                selectedContactRow.remove();
+                const contactCount = document.getElementById("contact-count");
+                contactCount.innerText = `${document.querySelectorAll("#contact-list > div").length} Contacts`
+                selectedContactId = null;
+                selectedContactRow = null;
+            }
+        });
+        async function getContacts() {
+            const response = await fetch("http://localhost:3000/api/contact");
+            const result = await response.json();
+            const contactList = document.getElementById("contact-list");
+            const contactCount = document.getElementById("contact-count");
+            contactCount.innerText = `${result.data.length} Contacts`;
+            result.data.forEach(contact => {
+                const contactRow = document.createElement("div");
+                contactRow.className = "p-5 cursor-pointer hover:bg-[#151F32]/20 transition-colors space-y-2";
+                contactRow.addEventListener("click", () => {
+                    selectContact(contact, contactRow);
+                });
+                contactRow.innerHTML = `
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-semibold text-white"> ${contact.name}</span>
+                        <span class="font-mono text-[9px] text-brand-textMuted">NEW</span>
+                    </div> 
+                    <h4 class="text-xs font-bold text-white tracking-tight"> Contact Inquiry </h4>
+                    <p class="text-[11px] text-brand-textMuted leading-normal line-clamp-2"> ${contact.message} </p>
+                    <div class="pt-1">
+                        <span class="px-2 py-0.5 bg-brand-bg border border-brand-border text-[9px] font-mono text-brand-textMuted uppercase rounded-none"> 
+                            ${contact.email}
+                        </span>
+                    </div>
+                `;
+                contactList.appendChild(contactRow);
+            });
+
+            console.log(result);
+        }
+
+        getContacts();
+
+    </script>
+</body>
+</html>

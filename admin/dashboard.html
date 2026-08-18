@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en" class="h-screen overflow-hidden">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CUA Admin — Dashboard</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter (Sans-Serif) & JetBrains Mono (Monospace) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        brand: {
+                            bg: '#080C14',        /* Pitch dark backdrop */
+                            card: '#0D111A',      /* Dark slate navy card fill */
+                            sidebar: '#0A0E15',   /* Deeper slate for sidebar */
+                            border: '#151F32',    /* Thin structural slate borders */
+                            textMuted: '#8E9BB0'  /* Muted slate text details */
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom thin scrollbar for dashboard */
+        ::-webkit-scrollbar {
+            width: 5px;
+            height: 5px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #080C14;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #151F32;
+        }
+    </style>
+</head>
+<body class="font-sans text-white antialiased selection:bg-slate-800 selection:text-white h-screen flex overflow-hidden">
+
+    <!-- 1. Left Sidebar (Collapsible on mobile via state toggling) -->
+    <aside id="sidebar" class="fixed inset-y-0 left-0 z-50 w-64 bg-brand-sidebar border-r border-brand-border flex flex-col justify-between transform -translate-x-full lg:translate-x-0 lg:static transition-transform duration-300 ease-in-out">
+        
+        <!-- Sidebar Navigation content -->
+        <div class="flex flex-col">
+            <!-- Brand Area -->
+            <div class="h-16 px-6 border-b border-brand-border flex items-center justify-between">
+                <span class="font-mono text-sm font-bold tracking-wider uppercase text-white">CUA ADMIN</span>
+                <button onclick="toggleSidebar()" class="lg:hidden text-brand-textMuted hover:text-white">
+                    <!-- Icon: Close 'X' -->
+                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Main Nav list -->
+            <nav class="p-4 space-y-1">
+                <!-- Dashboard Active link -->
+                <a href="#" class="flex items-center space-x-3 px-4 py-3 bg-[#151F32]/60 text-white font-mono text-xs sm:text-sm tracking-wider uppercase font-medium rounded-none">
+                    <!-- Icon: Grid Dashboard -->
+                    <svg class="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z" />
+                    </svg>
+                    <span>Dashboard</span>
+                </a>
+
+                <!-- Standard Projects Link -->
+                <a href="projectmanager.html" class="flex items-center space-x-3 px-4 py-3 text-brand-textMuted hover:text-white hover:bg-white/5 transition-all font-mono text-xs sm:text-sm tracking-wider uppercase font-medium rounded-none">
+                    <!-- Icon: Project Folder -->
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12.75V12A2.25 2.25 0 014.5 9.75h15A2.25 2.25 0 0121.75 12v.75m-19.5 0A2.25 2.25 0 004.5 15h15a2.25 2.25 0 002.25-2.25m-19.5 0v.25A2.25 2.25 0 004.5 17.5h15a2.25 2.25 0 002.25-2.25v-.25m-19.5 0V12a2.25 2.25 0 012.25-2.25h15A2.25 2.25 0 0121.75 12v.75m-19.5 0A2.25 2.25 0 004.5 15" />
+                    </svg>
+                    <span>Projects</span>
+                </a>
+
+                <!-- Standard Inquiries Link -->
+                <a href="inquiry.html" class="flex items-center space-x-3 px-4 py-3 text-brand-textMuted hover:text-white hover:bg-white/5 transition-all font-mono text-xs sm:text-sm tracking-wider uppercase font-medium rounded-none">
+                    <!-- Icon: Envelope/Messages -->
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25H4.5a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
+                    </svg>
+                    <span>Inquiries</span>
+                </a>
+
+                <!-- Standard Settings Link -->
+                <a href="#" class="flex items-center space-x-3 px-4 py-3 text-brand-textMuted hover:text-white hover:bg-white/5 transition-all font-mono text-xs sm:text-sm tracking-wider uppercase font-medium rounded-none">
+                    <!-- Icon: Gear/Settings -->
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.43l-1.003.828c-.293.241-.438.613-.43.992a7.723 7.723 0 010 .255c-.008.378.137.75.43.99l1.005.831a1.125 1.125 0 01.26 1.43l-1.297 2.247a1.125 1.125 0 01-1.37.491l-1.216-.456c-.356-.133-.751-.072-1.076.124a6.57 6.57 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.43l1.004-.83c.292-.24.437-.613.43-.992a6.932 6.932 0 010-.255c.007-.378-.138-.75-.43-.99l-1.004-.831a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.645-.869l.214-1.28z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                    <span>Settings</span>
+                </a>
+            </nav>
+        </div>
+
+        <!-- Sidebar Footer User Profile -->
+        <div class="p-4 border-t border-brand-border">
+            <div class="flex items-center space-x-3">
+                <div class="w-9 h-9 bg-brand-border flex items-center justify-center font-mono font-bold text-xs">
+                    U
+                </div>
+                <div>
+                    <h6 class="font-mono text-xs font-bold uppercase tracking-wider text-white">ADMIN_USER</h6>
+                    <span class="block font-mono text-[9px] text-brand-textMuted">v1.0.42</span>
+                </div>
+            </div>
+        </div>
+
+    </aside>
+
+    <!-- 2. Main Area (Dashboard Content) -->
+    <div class="flex-1 flex flex-col h-screen overflow-hidden">
+        
+        <!-- Header Search Bar -->
+        <header class="h-16 border-b border-brand-border px-6 flex items-center justify-between bg-brand-sidebar">
+            <div class="flex items-center space-x-4">
+                <!-- Hamburger Menu Trigger (Mobile only) -->
+                <button onclick="toggleSidebar()" class="lg:hidden text-brand-textMuted hover:text-white">
+                    <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+                
+                <!-- Search Mockup -->
+                <div class="flex items-center space-x-3 text-xs sm:text-sm text-brand-textMuted font-mono">
+                    <!-- Icon: Search Lens -->
+                    <svg class="w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.637 10.637z" />
+                    </svg>
+                    <span>Press <kbd class="px-1.5 py-0.5 bg-brand-border border border-slate-700/60 rounded-sm text-[10px] text-white select-none">/</kbd> to search</span>
+                </div>
+            </div>
+
+            <!-- Header Right Menu -->
+            <div class="flex items-center space-x-4">
+                <!-- Notifications Bell -->
+                <button class="relative text-brand-textMuted hover:text-white transition-colors">
+                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
+                    </svg>
+                    <span class="absolute top-1.5 right-1.5 w-1.5 h-1.5 bg-amber-500 rounded-full"></span>
+                </button>
+
+                <!-- Profile Badge Placeholder -->
+                <div class="w-8 h-8 rounded-full bg-brand-border flex items-center justify-center font-mono font-bold text-xs select-none">
+                    A
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Scrolling Container -->
+        <main class="flex-1 overflow-y-auto bg-brand-bg p-6 space-y-8">
+            
+            <!-- Dashboard Main Header Row -->
+            <section class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                <div class="space-y-1">
+                    <div class="flex items-center space-x-3">
+                        <h1 class="text-2xl sm:text-3xl font-bold tracking-tight text-white">Overview</h1>
+                        <span class="px-2.5 py-1 border border-brand-border bg-brand-sidebar text-[9px] font-mono tracking-widest text-emerald-500 uppercase rounded-none">
+                            [ System OK ]
+                        </span>
+                    </div>
+                    <p class="text-xs sm:text-sm text-brand-textMuted">System metrics and recent activity.</p>
+                </div>
+                
+                <button class="px-5 py-3 border border-brand-border bg-brand-card hover:bg-[#151F32]/50 text-white font-mono text-xs tracking-wider uppercase font-bold transition-all rounded-none flex items-center space-x-2">
+                    <span>Generate Report</span>
+                    <span class="text-[10px]">↓</span>
+                </button>
+            </section>
+
+            <!-- Grid Layout 1: 3-Column KPI Metric Cards -->
+            <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                
+                <!-- Card 1: Total Projects -->
+                <div class="border border-brand-border bg-brand-card p-6 rounded-none space-y-4">
+                    <div class="flex items-center justify-between text-brand-textMuted font-mono text-xs">
+                        <span class="tracking-widest uppercase">Total Projects</span>
+                        <!-- Icon: Mini Dashboard metric tag -->
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6z" />
+                        </svg>
+                    </div>
+                    <div class="space-y-1">
+                        <h3 class="text-3xl sm:text-4xl font-bold tracking-tight text-white font-sans">142</h3>
+                        <span class="block font-mono text-[10px] text-emerald-500">↗ +12% this month</span>
+                    </div>
+                </div>
+
+                <!-- Card 2: New Inquiries -->
+                <div class="border border-brand-border bg-brand-card p-6 rounded-none space-y-4">
+                    <div class="flex items-center justify-between text-brand-textMuted font-mono text-xs">
+                        <span class="tracking-widest uppercase">New Inquiries</span>
+                        <!-- Icon: Envelope msg -->
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25H4.5a2.25 2.25 0 01-2.25-2.25V6.75" />
+                        </svg>
+                    </div>
+                    <div class="space-y-1">
+                        <h3 class="text-3xl sm:text-4xl font-bold tracking-tight text-white font-sans">28</h3>
+                        <span class="block font-mono text-[10px] text-emerald-500">↗ +5% this month</span>
+                    </div>
+                </div>
+
+                <!-- Card 3: Site Visits -->
+                <div class="border border-brand-border bg-brand-card p-6 rounded-none space-y-4">
+                    <div class="flex items-center justify-between text-brand-textMuted font-mono text-xs">
+                        <span class="tracking-widest uppercase">Site Visits (7D)</span>
+                        <!-- Icon: Eye -->
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
+                    </div>
+                    <div class="space-y-1">
+                        <h3 class="text-3xl sm:text-4xl font-bold tracking-tight text-white font-sans">8.4k</h3>
+                        <span class="block font-mono text-[10px] text-emerald-500">↗ +22% this week</span>
+                    </div>
+                </div>
+
+            </section>
+
+            <!-- Grid Layout 2: Split columns for main data lists -->
+            <section class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                
+                <!-- Section Block 1: Recent Inquiries Table (Wide column) -->
+                <div class="lg:col-span-8 border border-brand-border bg-brand-card p-6 rounded-none space-y-6">
+                    <div class="flex items-center justify-between">
+                        <h4 class="font-mono text-xs sm:text-sm font-bold tracking-widest uppercase text-white">Recent Inquiries</h4>
+                        <!-- More icon -->
+                        <button class="text-brand-textMuted hover:text-white">
+                            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM12.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM18.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
+                            </svg>
+                        </button>
+                    </div>
+
+                    <!-- Responsive Horizontal Table Area -->
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse text-xs sm:text-sm">
+                            <thead>
+                                <tr class="border-b border-brand-border/60 text-brand-textMuted font-mono">
+                                    <th class="pb-3 pr-4 font-medium uppercase tracking-wider text-[10px]">Date</th>
+                                    <th class="pb-3 px-4 font-medium uppercase tracking-wider text-[10px]">Name</th>
+                                    <th class="pb-3 px-4 font-medium uppercase tracking-wider text-[10px]">Subject</th>
+                                    <th class="pb-3 pl-4 font-medium uppercase tracking-wider text-[10px] text-right">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-brand-border/40">
+                                <!-- Row 1 -->
+                                <tr>
+                                    <td class="py-4 pr-4 text-brand-textMuted font-mono">10.24.23</td>
+                                    <td class="py-4 px-4 font-bold text-white">Sarah Jenkins</td>
+                                    <td class="py-4 px-4 text-brand-textMuted">Enterprise Licensing Agreement...</td>
+                                    <td class="py-4 pl-4 text-right">
+                                        <span class="px-2 py-1 bg-[#151F32] border border-brand-border text-[9px] font-mono tracking-wider text-amber-500 rounded-none uppercase">NEW</span>
+                                    </td>
+                                </tr>
+                                <!-- Row 2 -->
+                                <tr>
+                                    <td class="py-4 pr-4 text-brand-textMuted font-mono">10.23.23</td>
+                                    <td class="py-4 px-4 font-bold text-white">Michael Chen</td>
+                                    <td class="py-4 px-4 text-brand-textMuted">Technical Support - API Integration...</td>
+                                    <td class="py-4 pl-4 text-right">
+                                        <span class="px-2 py-1 bg-[#151F32]/40 border border-brand-border/40 text-[9px] font-mono tracking-wider text-slate-400 rounded-none uppercase">READ</span>
+                                    </td>
+                                </tr>
+                                <!-- Row 3 -->
+                                <tr>
+                                    <td class="py-4 pr-4 text-brand-textMuted font-mono">10.22.23</td>
+                                    <td class="py-4 px-4 font-bold text-white">Elena Rodriguez</td>
+                                    <td class="py-4 px-4 text-brand-textMuted">Partnership Opportunity</td>
+                                    <td class="py-4 pl-4 text-right">
+                                        <span class="px-2 py-1 bg-slate-900 border border-brand-border text-[9px] font-mono tracking-wider text-emerald-500 rounded-none uppercase">REPLIED</span>
+                                    </td>
+                                </tr>
+                                <!-- Row 4 -->
+                                <tr>
+                                    <td class="py-4 pr-4 text-brand-textMuted font-mono">10.21.23</td>
+                                    <td class="py-4 px-4 font-bold text-white">David Smith</td>
+                                    <td class="py-4 px-4 text-brand-textMuted">Billing Discrepancy #4928</td>
+                                    <td class="py-4 pl-4 text-right">
+                                        <span class="px-2 py-1 bg-[#151F32] border border-brand-border text-[9px] font-mono tracking-wider text-amber-500 rounded-none uppercase">NEW</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Section Block 2: Project Status (Narrow column) -->
+                <div class="lg:col-span-4 border border-brand-border bg-brand-card p-6 rounded-none space-y-6">
+                    <div class="flex items-center justify-between">
+                        <h4 class="font-mono text-xs sm:text-sm font-bold tracking-widest uppercase text-white">Project Status</h4>
+                        <!-- Plus Icon -->
+                        <button class="text-brand-textMuted hover:text-white">
+                            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                            </svg>
+                        </button>
+                    </div>
+
+                    <!-- Vertical Project List -->
+                    <div class="space-y-4 text-xs sm:text-sm">
+                        <!-- Project 1 -->
+                        <div class="flex items-center justify-between p-3 border border-brand-border bg-[#080C14]/40">
+                            <div class="flex items-center space-x-3">
+                                <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                                <div>
+                                    <h6 class="font-bold text-white">Project Alpha</h6>
+                                    <span class="block font-mono text-[9px] text-brand-textMuted">PRJ-001</span>
+                                </div>
+                            </div>
+                            <span class="font-mono text-[10px] tracking-wider text-emerald-500 uppercase">ACTIVE</span>
+                        </div>
+                        
+                        <!-- Project 2 -->
+                        <div class="flex items-center justify-between p-3 border border-brand-border bg-[#080C14]/40">
+                            <div class="flex items-center space-x-3">
+                                <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                                <div>
+                                    <h6 class="font-bold text-white">Project Beta Restructure</h6>
+                                    <span class="block font-mono text-[9px] text-brand-textMuted">PRJ-002</span>
+                                </div>
+                            </div>
+                            <span class="font-mono text-[10px] tracking-wider text-emerald-500 uppercase">ACTIVE</span>
+                        </div>
+
+                        <!-- Project 3 -->
+                        <div class="flex items-center justify-between p-3 border border-brand-border bg-[#080C14]/40">
+                            <div class="flex items-center space-x-3">
+                                <span class="w-2 h-2 rounded-full bg-slate-500"></span>
+                                <div>
+                                    <h6 class="font-bold text-white">Q4 Marketing Campaign</h6>
+                                    <span class="block font-mono text-[9px] text-brand-textMuted">PRJ-003</span>
+                                </div>
+                            </div>
+                            <span class="font-mono text-[10px] tracking-wider text-brand-textMuted uppercase">DRAFT</span>
+                        </div>
+
+                        <!-- Project 4 -->
+                        <div class="flex items-center justify-between p-3 border border-brand-border bg-[#080C14]/40">
+                            <div class="flex items-center space-x-3">
+                                <span class="w-2 h-2 rounded-full bg-slate-500"></span>
+                                <div>
+                                    <h6 class="font-bold text-white">Internal Wiki Overhaul</h6>
+                                    <span class="block font-mono text-[9px] text-brand-textMuted">PRJ-004</span>
+                                </div>
+                            </div>
+                            <span class="font-mono text-[10px] tracking-wider text-brand-textMuted uppercase">DRAFT</span>
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Collapsible Sidebar Interactivity JavaScript -->
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            if (sidebar.classList.contains('-translate-x-full')) {
+                sidebar.classList.remove('-translate-x-full');
+            } else {
+                sidebar.classList.add('-translate-x-full');
+            }
+        }
+    </script>
+</body>
+</html>

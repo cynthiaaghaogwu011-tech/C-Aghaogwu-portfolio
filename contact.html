@@ -39,7 +39,12 @@
     </style>
 </head>
 <body class="font-sans text-white antialiased selection:bg-slate-800 selection:text-white min-h-screen flex flex-col justify-between">
-
+    <div id="toast" class="fixed top-24 right-6 z-[9999] hidden max-w-sm rounded-lg bg-neutral-900 px-6 py-4 text-sm text-white shadow-2xl translate-y-[-10px] opacity-0 transition-all duration-300">
+        <div class="flex items-center gap-3">
+            <span id="toastIcon" class="text-lg">✅</span>
+            <p id="toastMessage"></p>
+        </div>
+    </div>
     <!-- Header Navigation -->
     <header class="border-b border-gray-border bg-brand-bg/85 backdrop-blur-md sticky top-0 z-50 bg-white">
         <div class="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-5 flex items-center justify-between relative">
@@ -177,23 +182,23 @@
                         <!-- Full Name Field -->
                         <div class="space-y-2">
                             <label class="block font-mono text-xs text-brand-textMuted">Full Name</label>
-                            <input type="text" placeholder="John Doe" required 
-                                class="w-full p-4 bg-gray-100 border bordergray-border text-xs sm:text-sm text-black placeholder-slate-600 focus:outline-none focus:border-orange-400 rounded-none transition-colors">
+                            <input type="text" name="name" placeholder="John Doe" required 
+                            class="w-full p-4 bg-gray-100 border bordergray-border text-xs sm:text-sm text-black placeholder-slate-600 focus:outline-none focus:border-orange-400 rounded-none transition-colors">
                         </div>
 
                         <!-- Email Address Field -->
                         <div class="space-y-2">
                             <label class="block font-mono text-xs text-brand-textMuted">Email Address</label>
-                            <input type="email" placeholder="john@example.com" required 
-                                class="w-full p-4 bg-gray-100 border border-gray-border text-xs sm:text-sm text-black placeholder-slate-600 focus:outline-none focus:border-orange-400 rounded-none transition-colors">
+                            <input type="email" name="email" placeholder="john@example.com" required 
+                            class="w-full p-4 bg-gray-100 border border-gray-border text-xs sm:text-sm text-black placeholder-slate-600 focus:outline-none focus:border-orange-400 rounded-none transition-colors">
                         </div>
                     </div>
 
                     <!-- Textarea Details Field -->
                     <div class="space-y-2">
                         <label class="block font-mono text-xs text-brand-textMuted">Project Details</label>
-                        <textarea rows="6" placeholder="Briefly describe your project or inquiry..." required 
-                            class="w-full p-4 bg-gray-100 border border-gray-border text-xs sm:text-sm text-black placeholder-slate-600 focus:outline-none focus:border-orange-400 rounded-none transition-colors resize-none"></textarea>
+                        <textarea name="message" rows="6" placeholder="Briefly describe your project or inquiry..." required 
+                        class="w-full p-4 bg-gray-100 border border-gray-border text-xs sm:text-sm text-black placeholder-slate-600 focus:outline-none focus:border-orange-400 rounded-none transition-colors resize-none"></textarea>
                     </div>
 
                     <!-- Send Action Button -->
@@ -203,6 +208,7 @@
                     </button>
 
                 </form>
+                <p id="formMessage" class="mt-4 text-sm text-center hidden"></p>
             </div>
 
         </div>
@@ -249,21 +255,68 @@
             }
         }
 
-        function handleContactSubmit(event) {
-            event.preventDefault();
-            const form = event.target;
-            const btn = form.querySelector('button[type="submit"]');
+        function showToast(message, type = "success") {
+            const toast = document.getElementById("toast");
+            const toastMessage = document.getElementById("toastMessage");
+            const toastIcon = document.getElementById("toastIcon");
             
-            btn.innerHTML = `<span>SENDING...</span>`;
-            btn.disabled = true;
-
+            toastMessage.textContent = message;
+                if (type === "success") {
+                    toastIcon.textContent = "✅";
+                } else {
+                    toastIcon.textContent = "!";
+                }
+            toast.classList.remove("hidden");
+                setTimeout(() => {
+                toast.classList.remove("translate-y-[-10px]", "opacity-0");
+            }, 10);
             setTimeout(() => {
-                alert("Message simulated as successfully sent.");
-                form.reset();
-                btn.innerHTML = `<span>Send Message</span><span class="text-base">➔</span>`;
-                btn.disabled = false;
-            }, 800);
+                toast.classList.add("translate-y-[-10px]", "opacity-0");
+                setTimeout(() => {
+                    toast.classList.add("hidden");
+                }, 300);
+            }, 4000);
         }
+
+        async function handleContactSubmit(event) {
+            event.preventDefault(); //Prevent browsers default form submision method.(ill handle it myself.)
+            const form = event.target; //give me the form submitted and store it in this variable (form).
+            const formMessage = document.getElementById("formMessage"); 
+            const btn = form.querySelector('button[type="submit"]');  //inside this form, find a button whose type is submit and storre it in (btn).
+            const formData = new FormData(form); //collect the submitted values from this form
+            const data = Object.fromEntries(formData);  //Object.fromEntries converts values into javscript object and saves them in the variable called data.
+            console.log("Data being sent:", data);
+            btn.innerHTML = `<span>SENDING...</span>`;  //changes whats displaying inside the button.
+            btn.disabled = true;  //prevent user from clicking the btn repeatedly while the request is been processed.
+
+            try{
+                const response = await fetch("http://localhost:3000/api/contact", {  //get reponse before moving on to the next function. (fetch() is  used to make a request to the server.)
+                    method: "POST",  //This is a POST req.
+                    headers: {"Content-Type": "application/json"},
+                    body: JSON.stringify(data)
+                });
+                
+                const result = await response.json();  //response from backend.
+                console.log("Backend response:", result);
+                if (!response.ok) {  //if not successfull stop the try process and transfer to the catch block.( go handle error.)
+                    throw new Error(result.message || "Failed to send message,");
+                }
+                
+                showToast(result.message, "success");
+                formMessage.classList.remove("hidden");
+                console.log("Message now inside HTML:", formMessage.textContent);
+                form.reset(); //Clears the form fields
+
+            } catch (error) {   //If an error happens inside the try section, javascript comes here.
+                console.error("CONTACT ERROR:", error);
+                showToast(error.message, "error");
+                formMessage.classList.remove("hidden");
+
+            } finally {  //Run this code whether the operation succeeds or fails.
+                btn.innerHTML = `<span>Send Message</span><span class="text-base"></span>`;
+                btn.disabled = false  //restore button so user can click it again.
+            }
+        };
     </script>
 </body>
 </html>

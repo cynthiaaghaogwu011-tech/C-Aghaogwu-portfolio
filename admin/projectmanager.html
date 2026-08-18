@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en" class="h-screen overflow-hidden">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CUA Admin — Projects</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter (Sans-Serif) & JetBrains Mono (Monospace) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        brand: {
+                            bg: '#080C14',        /* Master dark background */
+                            card: '#0D111A',      /* Slate dark container card */
+                            sidebar: '#0A0E15',   /* Darker slate for sidebar panel */
+                            border: '#151F32',    /* Clean slate grid borders */
+                            textMuted: '#8E9BB0'  /* Muted slate text details */
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom thin scrollbar */
+        ::-webkit-scrollbar {
+            width: 5px;
+            height: 5px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #080C14;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #151F32;
+        }
+    </style>
+</head>
+<body class="font-sans text-white antialiased selection:bg-slate-800 selection:text-white h-screen flex overflow-hidden">
+
+    <!-- 1. Left Sidebar (Collapsible drawer structure) -->
+    <aside id="sidebar" class="fixed inset-y-0 left-0 z-50 w-64 bg-brand-sidebar border-r border-brand-border flex flex-col justify-between transform -translate-x-full lg:translate-x-0 lg:static transition-transform duration-300 ease-in-out">
+        
+        <div class="flex flex-col">
+            <!-- Sidebar Header Brand -->
+            <div class="h-16 px-6 border-b border-brand-border flex items-center justify-between">
+                <span class="font-mono text-sm font-bold tracking-wider uppercase text-white">CUA ADMIN</span>
+                <button onclick="toggleSidebar()" class="lg:hidden text-brand-textMuted hover:text-white">
+                    <!-- Icon: Close Drawer -->
+                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Navigation Lists -->
+            <nav class="p-4 space-y-1">
+                <!-- Dashboard Inactive -->
+                <a href="dashboard.html" class="flex items-center space-x-3 px-4 py-3 text-brand-textMuted hover:text-white hover:bg-white/5 transition-all font-mono text-xs sm:text-sm tracking-wider uppercase font-medium rounded-none">
+                    <!-- Icon: Dashboard Grid -->
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z" />
+                    </svg>
+                    <span>Dashboard</span>
+                </a>
+
+                <!-- Projects (ACTIVE STATE) -->
+                <a href="projectmanager.html" class="flex items-center space-x-3 px-4 py-3 bg-[#151F32]/60 text-white font-mono text-xs sm:text-sm tracking-wider uppercase font-medium rounded-none">
+                    <!-- Icon: Folders -->
+                    <svg class="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12.75V12A2.25 2.25 0 014.5 9.75h15A2.25 2.25 0 0121.75 12v.75m-19.5 0A2.25 2.25 0 004.5 15h15a2.25 2.25 0 002.25-2.25m-19.5 0v.25A2.25 2.25 0 004.5 17.5h15a2.25 2.25 0 002.25-2.25v-.25m-19.5 0V12a2.25 2.25 0 012.25-2.25h15A2.25 2.25 0 0121.75 12v.75m-19.5 0A2.25 2.25 0 004.5 15" />
+                    </svg>
+                    <span>Projects</span>
+                </a>
+
+                <!-- Inquiries Inactive -->
+                <a href="inquiry.html" class="flex items-center space-x-3 px-4 py-3 text-brand-textMuted hover:text-white hover:bg-white/5 transition-all font-mono text-xs sm:text-sm tracking-wider uppercase font-medium rounded-none">
+                    <!-- Icon: Messages -->
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25H4.5a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
+                    </svg>
+                    <span>Inquiries</span>
+                </a>
+
+                <!-- Settings Inactive -->
+                <a href="#" class="flex items-center space-x-3 px-4 py-3 text-brand-textMuted hover:text-white hover:bg-white/5 transition-all font-mono text-xs sm:text-sm tracking-wider uppercase font-medium rounded-none">
+                    <!-- Icon: Settings Gear -->
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.43l-1.003.828c-.293.241-.438.613-.43.992a7.723 7.723 0 010 .255c-.008.378.137.75.43.99l1.005.831a1.125 1.125 0 01.26 1.43l-1.297 2.247a1.125 1.125 0 01-1.37.491l-1.216-.456c-.356-.133-.751-.072-1.076.124a6.57 6.57 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.43l1.004-.83c.292-.24.437-.613.43-.992a6.932 6.932 0 010-.255c.007-.378-.138-.75-.43-.99l-1.004-.831a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.645-.869l.214-1.28z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                    <span>Settings</span>
+                </a>
+            </nav>
+        </div>
+
+        <!-- Sidebar Profile Block -->
+        <div class="p-4 border-t border-brand-border">
+            <div class="flex items-center space-x-3">
+                <div class="w-9 h-9 bg-brand-border flex items-center justify-center font-mono font-bold text-xs">
+                    U
+                </div>
+                <div>
+                    <h6 class="font-mono text-xs font-bold uppercase tracking-wider text-white">ADMIN_USER</h6>
+                    <span class="block font-mono text-[9px] text-brand-textMuted">v1.0.42</span>
+                </div>
+            </div>
+        </div>
+
+    </aside>
+
+    <!-- 2. Main Area (Projects Panel) -->
+    <div class="flex-1 flex flex-col h-screen overflow-hidden">
+        
+        <!-- Header Top Bar -->
+        <header class="h-16 border-b border-brand-border px-6 flex items-center justify-between bg-brand-sidebar shrink-0">
+            <div class="flex items-center space-x-4">
+                <!-- Hamburger Menu Toggle (Mobile) -->
+                <button onclick="toggleSidebar()" class="lg:hidden text-brand-textMuted hover:text-white focus:outline-none">
+                    <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+                
+                <!-- Search Helper Cue -->
+                <div class="flex items-center space-x-3 text-xs sm:text-sm text-brand-textMuted font-mono">
+                    <svg class="w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.637 10.637z" />
+                    </svg>
+                    <span>Press <kbd class="px-1.5 py-0.5 bg-brand-border border border-slate-700/60 rounded-sm text-[10px] text-white">/</kbd> to search</span>
+                </div>
+            </div>
+
+            <!-- Profile Badge Header Area -->
+            <div class="flex items-center space-x-4">
+                <button class="relative text-brand-textMuted hover:text-white transition-colors">
+                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
+                    </svg>
+                </button>
+                <div class="w-8 h-8 rounded-full bg-brand-border flex items-center justify-center font-mono font-bold text-xs select-none">
+                    A
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Workspace Scroll Block -->
+        <main class="flex-grow overflow-y-auto bg-brand-bg p-6 flex flex-col justify-between">
+            
+            <div class="space-y-6">
+                <!-- Page Title Block & Action Button -->
+                <section class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                    <div class="space-y-1">
+                        <h1 class="text-2xl sm:text-3xl font-bold tracking-tight text-white">Portfolio Projects</h1>
+                        <p class="text-xs sm:text-sm text-brand-textMuted">Manage and track the status of your active and past projects.</p>
+                    </div>
+                    
+                    <button class="px-5 py-3 bg-white text-[#080C14] font-mono text-xs tracking-wider uppercase font-bold hover:bg-neutral-200 transition-colors rounded-none flex items-center space-x-2">
+                        <span class="text-xs">+</span>
+                        <span>New Project</span>
+                    </button>
+                </section>
+
+                <!-- Search Filter Control Panel -->
+                <section class="flex items-center justify-between gap-4 py-2">
+                    <!-- Text Search Input Block -->
+                    <div class="relative flex-1 max-w-sm">
+                        <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <svg class="w-4 h-4 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.637 10.637z" />
+                            </svg>
+                        </span>
+                        <input type="text" placeholder="Search projects..." class="w-full pl-9 pr-4 py-3 bg-brand-card border border-brand-border text-xs sm:text-sm text-white placeholder-slate-600 focus:outline-none focus:border-slate-500 rounded-none transition-colors">
+                    </div>
+
+                    <!-- Filter Trigger Button -->
+                    <button class="px-4 py-3 border border-brand-border bg-brand-card hover:bg-[#151F32]/60 text-white font-mono text-xs tracking-wider uppercase font-bold transition-all rounded-none flex items-center space-x-2">
+                        <!-- Icon: Filtering Sliders -->
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 11-3 0m3 0a1.5 1.5 0 10-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-9.75 0h9.75" />
+                        </svg>
+                        <span>Filter</span>
+                    </button>
+                </section>
+
+                <!-- Responsive Project Table Block (Horizontally scrollable on small viewports) -->
+                <section class="border border-brand-border bg-brand-card overflow-x-auto rounded-none">
+                    <table class="w-full text-left border-collapse text-xs sm:text-sm min-w-[700px]">
+                        <thead>
+                            <tr class="border-b border-brand-border text-brand-textMuted font-mono">
+                                <th class="p-4 font-medium uppercase tracking-wider text-[10px]">Project Title</th>
+                                <th class="p-4 font-medium uppercase tracking-wider text-[10px]">Category</th>
+                                <th class="p-4 font-medium uppercase tracking-wider text-[10px]">Tech Stack</th>
+                                <th class="p-4 font-medium uppercase tracking-wider text-[10px]">Status</th>
+                                <th class="p-4 font-medium uppercase tracking-wider text-[10px] text-right">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-brand-border">
+                            <!-- Project Row 1 -->
+                            <tr class="hover:bg-white/[0.01] transition-colors">
+                                <td class="p-4 space-y-1">
+                                    <h6 class="font-bold text-white text-sm">Quantum Edge Analytics</h6>
+                                    <span class="block font-mono text-[9px] text-brand-textMuted uppercase">ID: PRJ-089</span>
+                                </td>
+                                <td class="p-4 text-brand-textMuted font-medium">FinTech Platform</td>
+                                <td class="p-4">
+                                    <div class="flex flex-wrap gap-1.5">
+                                        <span class="px-2.5 py-1 bg-[#080C14] text-[9px] font-mono text-brand-textMuted rounded-none">React</span>
+                                        <span class="px-2.5 py-1 bg-[#080C14] text-[9px] font-mono text-brand-textMuted rounded-none">Node.js</span>
+                                        <span class="px-2.5 py-1 bg-[#080C14] text-[9px] font-mono text-brand-textMuted rounded-none">PostgreSQL</span>
+                                    </div>
+                                </td>
+                                <td class="p-4">
+                                    <span class="flex items-center space-x-2 text-white font-medium text-xs">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                                        <span>Published</span>
+                                    </span>
+                                </td>
+                                <td class="p-4 text-right">
+                                    <button class="text-brand-textMuted hover:text-white transition-colors">
+                                        <!-- Actions ellipsis -->
+                                        <svg class="w-5 h-5 ml-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM12.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM18.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
+                                        </svg>
+                                    </button>
+                                </td>
+                            </tr>
+
+                            <!-- Project Row 2 -->
+                            <tr class="hover:bg-white/[0.01] transition-colors">
+                                <td class="p-4 space-y-1">
+                                    <h6 class="font-bold text-white text-sm">Aura Design System</h6>
+                                    <span class="block font-mono text-[9px] text-brand-textMuted uppercase">ID: PRJ-092</span>
+                                </td>
+                                <td class="p-4 text-brand-textMuted font-medium">Internal Tooling</td>
+                                <td class="p-4">
+                                    <div class="flex flex-wrap gap-1.5">
+                                        <span class="px-2.5 py-1 bg-[#080C14] text-[9px] font-mono text-brand-textMuted rounded-none">Figma</span>
+                                        <span class="px-2.5 py-1 bg-[#080C14] text-[9px] font-mono text-brand-textMuted rounded-none">Tailwind</span>
+                                        <span class="px-2.5 py-1 bg-[#080C14] text-[9px] font-mono text-brand-textMuted rounded-none">Storybook</span>
+                                    </div>
+                                </td>
+                                <td class="p-4">
+                                    <span class="flex items-center space-x-2 text-brand-textMuted text-xs">
+                                        <span class="w-1.5 h-1.5 rounded-full border border-slate-500"></span>
+                                        <span>Draft</span>
+                                    </span>
+                                </td>
+                                <td class="p-4 text-right">
+                                    <button class="text-brand-textMuted hover:text-white transition-colors">
+                                        <svg class="w-5 h-5 ml-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM12.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM18.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
+                                        </svg>
+                                    </button>
+                                </td>
+                            </tr>
+
+                            <!-- Project Row 3 -->
+                            <tr class="hover:bg-white/[0.01] transition-colors">
+                                <td class="p-4 space-y-1">
+                                    <h6 class="font-bold text-white text-sm">Nebula Cloud Infrastructure</h6>
+                                    <span class="block font-mono text-[9px] text-brand-textMuted uppercase">ID: PRJ-095</span>
+                                </td>
+                                <td class="p-4 text-brand-textMuted font-medium">DevOps</td>
+                                <td class="p-4">
+                                    <div class="flex flex-wrap gap-1.5">
+                                        <span class="px-2.5 py-1 bg-[#080C14] text-[9px] font-mono text-brand-textMuted rounded-none">Terraform</span>
+                                        <span class="px-2.5 py-1 bg-[#080C14] text-[9px] font-mono text-brand-textMuted rounded-none">AWS</span>
+                                        <span class="px-2.5 py-1 bg-[#080C14] text-[9px] font-mono text-brand-textMuted rounded-none">Docker</span>
+                                    </div>
+                                </td>
+                                <td class="p-4">
+                                    <span class="flex items-center space-x-2 text-brand-textMuted text-xs">
+                                        <span class="w-1.5 h-1.5 rounded-full border border-slate-500"></span>
+                                        <span>Draft</span>
+                                    </span>
+                                </td>
+                                <td class="p-4 text-right">
+                                    <button class="text-brand-textMuted hover:text-white transition-colors">
+                                        <svg class="w-5 h-5 ml-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM12.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM18.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
+                                        </svg>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+            </div>
+
+            <!-- Pagination Table Footer Segment -->
+            <footer class="pt-6 border-t border-brand-border/60 flex flex-col sm:flex-row items-center justify-between gap-4 shrink-0">
+                <span class="font-mono text-[10px] sm:text-xs text-brand-textMuted tracking-wider">
+                    Showing 3 of 12 projects
+                </span>
+                
+                <!-- Pagination Control Arrow Buttons -->
+                <div class="flex items-center space-x-2">
+                    <button class="w-8 h-8 border border-brand-border bg-brand-card hover:bg-[#151F32]/60 text-brand-textMuted hover:text-white transition-all rounded-none flex items-center justify-center font-mono text-xs">
+                        &lt;
+                    </button>
+                    <button class="w-8 h-8 border border-brand-border bg-brand-card hover:bg-[#151F32]/60 text-brand-textMuted hover:text-white transition-all rounded-none flex items-center justify-center font-mono text-xs">
+                        &gt;
+                    </button>
+                </div>
+            </footer>
+
+        </main>
+    </div>
+
+    <!-- JavaScript Collapsible Drawer Side Menu Logic -->
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            if (sidebar.classList.contains('-translate-x-full')) {
+                sidebar.classList.remove('-translate-x-full');
+            } else {
+                sidebar.classList.add('-translate-x-full');
+            }
+        }
+    </script>
+</body>
+</html>
