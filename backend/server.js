@@ -16,7 +16,7 @@ app.use(cors());
 app.use(express.json());  //Comes before route as an authenticity checkpoint before access is granted for route handlers data.
 app.use("/api/contact", contactRoutes); //Any request that begins with /api/contact can be handled by contactRoutes.
 
-const PORT = 3000; //local port our computer can to communicate with our application.(Starts Server).
+const PORT = process.env.PORT || 3000; //local port our computer can to communicate with our application.(Starts Server).
 
 app.get("/", (req, res) => { //if someone visits this this root url (http://localhost:3000) send them this message.
     res.send("C Aghaogwu Portfolio Backened is running!");
