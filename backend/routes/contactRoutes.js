@@ -15,7 +15,7 @@ router.post("/reply", async (req, res) => {
 
     const { data, error } = await resend.emails.send({
         from: "onboarding@resend.dev",
-        to: "cynthiaaghaogwu011@gmail.com",
+        to: email,
         subject: "Reply to your contact inquiry",
         text: message
     });
