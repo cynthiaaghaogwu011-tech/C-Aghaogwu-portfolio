@@ -11,6 +11,10 @@ const contactSchema = new mongoose.Schema({ //creating a schema that says a cont
     message: {
         type: String,
         required: true
+    },
+    status: {
+        type: String,
+        default: "new"
     }
 });
 
