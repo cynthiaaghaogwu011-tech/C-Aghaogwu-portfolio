@@ -306,32 +306,47 @@
             }
         }
 
-        //reply message submission
+        // reply message submission
         async function handleSendReply(event) {
             event.preventDefault();
             const textarea = document.getElementById('reply-input');
             const replyMessage = textarea.value;
-            const submitBtn = event.target.querySelector('button[type="submit"]');
-            if (!selectedContactId) {
-                alert("Please select a contact first.");
-                return;
-            }
-            if (!replyMessage.trim()) {  //If the reply contains no actual text, stop.
+            const submitBtn = event.target.querySelector('button[type="submit"]');               
+                if (!selectedContactId) {
+                    alert("Please select a contact first.");
+                    return;
+                if (!replyMessage.trim()) {
                 alert("Please enter a reply.");
-                return;
-            }
-
+                    return;
+                }
             submitBtn.innerHTML = `<span>SENDING...</span>`;
             submitBtn.disabled = true;
-            const response = await fetch("https://c-aghaogwu-backend.onrender.com/api/contact/reply", {
-                method: "POST",
-                headers: {"Content-Type": "application/json"},
-                body: JSON.stringify({
-                    contactId: selectedContactId,
-                    email: selectedContactEmail,
-                    message: replyMessage
-                })
-            });
+            try {
+                const response = await fetch("https://c-aghaogwu-backend.onrender.com/api/contact/reply",
+                {
+                    method: "POST",
+                    headers: {"Content-Type": "application/json"},
+                    body: JSON.stringify({
+                        contactId: selectedContactId,
+                        email: selectedContactEmail,
+                        message: replyMessage
+                    })
+                }
+            );
+                const data = await response.json();
+                    if (!response.ok) {
+                        throw new Error(data.message || "Failed to send reply.");
+                    }
+                    alert("Reply sent successfully!");
+                        textarea.value = "";
+                        submitBtn.innerHTML = `<span>SEND REPLY</span>`;
+                        submitBtn.disabled = false;
+            } catch (error) {
+                console.error("Reply error:", error);
+                alert("Failed to send reply: " + error.message);
+                submitBtn.innerHTML = `<span>SEND REPLY</span>`;
+                submitBtn.disabled = false;
+            }
         }
 
         function selectContact(contact, contactRow) {
