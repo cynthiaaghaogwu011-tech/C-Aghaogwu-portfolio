@@ -338,6 +338,18 @@
                     if (!response.ok) {
                         throw new Error(data.message || "Failed to send reply.");
                     }
+                const updateResponse = await fetch( `https://c-aghaogwu-backend.onrender.com/api/contact/${selectedContactId}`,
+                    {
+                        method: "PUT",
+                        headers: {"Content-Type": "application/json"},
+                        body: JSON.stringify({
+                            status: "replied"
+                        })
+                    }
+                );
+                if (!updateResponse.ok) {
+                    throw new Error("Reply was sent, but the inquiry status could not be updated.");
+                }
                     alert("Reply sent successfully!");
                         textarea.value = "";
                         submitBtn.innerHTML = `<span>SEND REPLY</span>`;
@@ -350,9 +362,15 @@
             }
         }
 
-        function selectContact(contact, contactRow) {
+        async function selectContact(contact, contactRow) {
             selectedContactId = contact._id;
-            selectedContactRow = contactRow;
+                const response = await fetch(`https://c-aghaogwu-backend.onrender.com/api/contact/${selectedContactId}`, {
+                    method: "PUT",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                    status: "read"
+                })
+            });
             selectedContactEmail = contact.email;
 
             document.getElementById("view-subject").innerText = "contact Inquiry";
@@ -400,10 +418,10 @@
                 contactRow.addEventListener("click", () => {
                     selectContact(contact, contactRow);
                 });
-                contactRow.innerHTML = `
+                contactRow.innerHTML = ` 
                     <div class="flex items-center justify-between">
                         <span class="text-xs font-semibold text-white"> ${contact.name}</span>
-                        <span class="font-mono text-[9px] text-brand-textMuted">NEW</span>
+                        <span class="font-mono text-[9px] text-brand-textMuted"> ${(contact.status || "new").toUpperCase()} </span> 
                     </div> 
                     <h4 class="text-xs font-bold text-white tracking-tight"> Contact Inquiry </h4>
                     <p class="text-[11px] text-brand-textMuted leading-normal line-clamp-2"> ${contact.message} </p>
