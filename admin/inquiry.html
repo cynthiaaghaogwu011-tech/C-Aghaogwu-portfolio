@@ -283,7 +283,7 @@
         </div>
     </div>
 
-    <!-- Active dynamic content state mapper database -->
+
     <script>
         let selectedContactId = null;
         let selectedContactRow = null;
@@ -315,6 +315,7 @@
                 if (!selectedContactId) {
                     alert("Please select a contact first.");
                     return;
+                }
                 if (!replyMessage.trim()) {
                 alert("Please enter a reply.");
                     return;
