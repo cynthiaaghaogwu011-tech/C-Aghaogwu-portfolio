@@ -1,4 +1,6 @@
 const Contact = require("../models/contact"); //Import the mongoose Model that acts as an interface between the application and the database.
+const { Resend } = require("resend");
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 const submitContact = async (req, res) => {
     try {
@@ -65,9 +67,46 @@ const deleteContact = async (req, res) => {
     }
 };
 
+//Reply Route
+const sendReply = async (req, res) => {
+    console.log("Reply request received:");
+
+    const { contactId, email, message } = req.body;
+    console.log("Contact ID:", contactId);
+    console.log("Email:", email);
+    console.log("Message:", message);
+    try {
+        const { data, error } = await resend.emails.send({
+            from: "onboarding@resend.dev",
+            to: "cynthiaaghaogwu011@gmail.com",
+            subject: "Reply to your contact inquiry",
+            text: message
+        });
+        console.log("Resend data:", data);
+        console.log("Resend error:", error);
+        if (error) {
+            return res.status(500).json({
+                message: "Failed to send reply.",
+                error: error.message || error
+            });
+        }
+        return res.status(200).json({
+            message: "Reply sent successfully!",
+            data: data
+        });
+    } catch (error) {
+        console.error("Reply route error:", error);
+        return res.status(500).json({
+            message: "An error occurred while sending the reply.",
+            error: error.message
+        });
+    }
+};
+
 module.exports = {
     submitContact,
     getContacts,
     updateContact,
-    deleteContact
+    deleteContact,
+    sendReply
 };
