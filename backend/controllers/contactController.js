@@ -37,7 +37,7 @@ const getContacts = async (req, res) => {
 
 const updateContact = async (req, res) =>{
     try {
-        const contact = await Contact.findByIdAndUpdate(req.params.id, req.body, { new: true});  //req.params.id (which doc.), req.body( what changes will be made), new: true (return updates doc.).
+        const contact = await Contact.findByIdAndUpdate(req.params.id, req.body, { returnDocument: "after" });  //req.params.id (which doc.), req.body( what changes will be made), new: true (return updates doc.).
         res.json({
             message: "Contact message update contact successfully!",
             data: contact
