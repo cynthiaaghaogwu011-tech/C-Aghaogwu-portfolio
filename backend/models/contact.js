@@ -12,11 +12,19 @@ const contactSchema = new mongoose.Schema({ //creating a schema that says a cont
         type: String,
         required: true
     },
+    subject: {
+        type: String,
+        default: "General Inquiry"
+    },
     status: {
         type: String,
         default: "new"
     }
-});
+},
+    {
+    timestamps: true
+    }
+);
 
 const contact = mongoose.model("Contact", contactSchema);  //Mongoose create a model called Contact using the rules in contactSchema. (Contact is the mongoose model my application uses to interact with Mongodb's contact data).
 

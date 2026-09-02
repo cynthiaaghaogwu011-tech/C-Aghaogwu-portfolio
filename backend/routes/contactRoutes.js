@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router(); //Creates router object specifically for contact-related routes.
+const isAuthenticated = require("../middleware/authMiddleware");
 const {
     submitContact,
     getContacts,
@@ -9,9 +10,9 @@ const {
 } = require("../controllers/contactController");
 
 router.post("/", submitContact);  //When a post req comes to /( a path inside this router), hand it over to submitContact.
-router.post("/reply", sendReply);
-router.get("/", getContacts);  
-router.put("/:id", updateContact);
-router.delete("/:id", deleteContact);
+router.post("/reply", isAuthenticated, sendReply);
+router.get("/", isAuthenticated, getContacts);  
+router.put("/:id", isAuthenticated, updateContact);
+router.delete("/:id", isAuthenticated, deleteContact);
 
 module.exports = router; 

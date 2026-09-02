@@ -8,7 +8,7 @@ const submitContact = async (req, res) => {
         const contact = await Contact.create(req.body); //Wait for the db operation to finish then contact  Model take the data that came with (req.body) the request and create a new contact doument with it.
         res.json({
             message: "Contact message received  succesfully!",  //When post request reaches this router at /, run this function.
-            data: req.body
+            data: contact
         });
     } catch (error) { 
         console.error("CONTACT ERROR:", error);

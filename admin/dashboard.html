@@ -108,16 +108,16 @@
         <!-- Sidebar Footer User Profile -->
         <div class="p-4 border-t border-brand-border">
             <div class="flex items-center space-x-3">
-                <div class="w-9 h-9 bg-brand-border flex items-center justify-center font-mono font-bold text-xs">
-                    U
-                </div>
+                <div class="w-9 h-9 bg-brand-border flex items-center justify-center font-mono font-bold text-xs"> U </div>
                 <div>
-                    <h6 class="font-mono text-xs font-bold uppercase tracking-wider text-white">ADMIN_USER</h6>
-                    <span class="block font-mono text-[9px] text-brand-textMuted">v1.0.42</span>
+                    <h6 class="font-mono text-xs font-bold uppercase tracking-wider text-white"> ADMIN_USER </h6>
+                    <span class="block font-mono text-[9px] text-brand-textMuted"> v1.0.42 </span>
                 </div>
             </div>
+            <button onclick="logoutAdmin()" class="w-full mt-4 py-3 border border-brand-border text-brand-textMuted hover:text-white hover:bg-white/5 font-mono text-xs uppercase tracking-wider transition-colors">
+                Logout
+            </button>
         </div>
-
     </aside>
 
     <!-- 2. Main Area (Dashboard Content) -->
@@ -258,7 +258,7 @@
                                     <th class="pb-3 pl-4 font-medium uppercase tracking-wider text-[10px] text-right">Status</th>
                                 </tr>
                             </thead>
-                            <tbody class="divide-y divide-brand-border/40">
+                            <tbody id="inquiriesTableBody" class="divide-y divide-brand-border/40">
                                 <!-- Row 1 -->
                                 <tr>
                                     <td class="py-4 pr-4 text-brand-textMuted font-mono">10.24.23</td>
@@ -313,55 +313,7 @@
                     </div>
 
                     <!-- Vertical Project List -->
-                    <div class="space-y-4 text-xs sm:text-sm">
-                        <!-- Project 1 -->
-                        <div class="flex items-center justify-between p-3 border border-brand-border bg-[#080C14]/40">
-                            <div class="flex items-center space-x-3">
-                                <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
-                                <div>
-                                    <h6 class="font-bold text-white">Project Alpha</h6>
-                                    <span class="block font-mono text-[9px] text-brand-textMuted">PRJ-001</span>
-                                </div>
-                            </div>
-                            <span class="font-mono text-[10px] tracking-wider text-emerald-500 uppercase">ACTIVE</span>
-                        </div>
-                        
-                        <!-- Project 2 -->
-                        <div class="flex items-center justify-between p-3 border border-brand-border bg-[#080C14]/40">
-                            <div class="flex items-center space-x-3">
-                                <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
-                                <div>
-                                    <h6 class="font-bold text-white">Project Beta Restructure</h6>
-                                    <span class="block font-mono text-[9px] text-brand-textMuted">PRJ-002</span>
-                                </div>
-                            </div>
-                            <span class="font-mono text-[10px] tracking-wider text-emerald-500 uppercase">ACTIVE</span>
-                        </div>
-
-                        <!-- Project 3 -->
-                        <div class="flex items-center justify-between p-3 border border-brand-border bg-[#080C14]/40">
-                            <div class="flex items-center space-x-3">
-                                <span class="w-2 h-2 rounded-full bg-slate-500"></span>
-                                <div>
-                                    <h6 class="font-bold text-white">Q4 Marketing Campaign</h6>
-                                    <span class="block font-mono text-[9px] text-brand-textMuted">PRJ-003</span>
-                                </div>
-                            </div>
-                            <span class="font-mono text-[10px] tracking-wider text-brand-textMuted uppercase">DRAFT</span>
-                        </div>
-
-                        <!-- Project 4 -->
-                        <div class="flex items-center justify-between p-3 border border-brand-border bg-[#080C14]/40">
-                            <div class="flex items-center space-x-3">
-                                <span class="w-2 h-2 rounded-full bg-slate-500"></span>
-                                <div>
-                                    <h6 class="font-bold text-white">Internal Wiki Overhaul</h6>
-                                    <span class="block font-mono text-[9px] text-brand-textMuted">PRJ-004</span>
-                                </div>
-                            </div>
-                            <span class="font-mono text-[10px] tracking-wider text-brand-textMuted uppercase">DRAFT</span>
-                        </div>
-                    </div>
+                    <div id="projectStatusList" class="space-y-4 text-xs sm:text-sm"></div>
                 </div>
 
             </section>
@@ -379,6 +331,78 @@
                 sidebar.classList.add('-translate-x-full');
             }
         }
+        async function checkAuthentication() {
+            const response = await fetch("http://127.0.0.1:3000/api/auth/check", {
+                credentials: "include"
+            });
+            if (!response.ok) {
+                window.location.href = "adminlogin.html";
+                return;
+            }
+            console.log("Admin is authenticated.");
+        }
+
+        document.addEventListener("DOMContentLoaded", async () => {  //Run this function when the page is loaded.
+            const projectStatusList = document.getElementById("projectStatusList");
+            const response = await fetch("http://127.0.0.1:3000/api/projects", {
+                credentials: "include"
+            });
+            const result = await response.json();
+                const cardsArray = result.data.map(project => {
+                    return `
+                        <div class="flex items-center justify-between p-3 border border-brand-border bg-[#080C14]/40">
+                            <div class="flex items-center space-x-3">
+                                <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                                    <div>
+                                        <h6 class="font-bold text-white">${project.title}</h6>
+                                <span class="block font-mono text-[9px] text-brand-textMuted">${project.projectId}</span>
+                            </div>
+                        </div>
+                        <span class="font-mono text-[10px] tracking-wider text-emerald-500 uppercase">${project.status}</span>
+                    </div>
+                `;
+            });
+            const cardsHTML = cardsArray.join("");
+            projectStatusList.innerHTML = cardsHTML;
+
+            const contactResponse = await fetch("http://127.0.0.1:3000/api/contact", {
+                credentials: "include"
+            });
+            const contactResult = await contactResponse.json();
+            const contactRowsArray = contactResult.data.map(contact => {
+            const formattedDate = contact.createdAt 
+                ? new Date(contact.createdAt).toLocaleDateString() 
+                : "—";
+                return `
+                    <tr>
+                        <td class="py-4 pr-4 text-brand-textMuted font-mono">${formattedDate}</td>
+                        <td class="py-4 px-4 font-bold text-white">${contact.name}</td>
+                        <td class="py-4 px-4 text-brand-textMuted">${contact.subject}</td>
+                        <td class="py-4 pl-4 text-right">
+                            <span class="px-2 py-1 bg-[#151F32] border border-brand-border text-[9px] font-mono tracking-wider text-amber-500 rounded-none uppercase">${contact.status}</span>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            const contactRowsHTML = contactRowsArray.join("");
+            const inquiriesTableBody = document.getElementById("inquiriesTableBody");
+                inquiriesTableBody.innerHTML = contactRowsHTML;
+        });
+
+        async function logoutAdmin() {
+            const response = await fetch("http://127.0.0.1:3000/api/auth/logout", {
+                method: "POST",
+                credentials: "include"
+            });
+            const result = await response.json();
+            if (response.ok) {
+                 window.location.href = "adminlogin.html";
+            } else {
+                alert(result.message);
+            }
+        }
+        checkAuthentication();
     </script>
 </body>
 </html>

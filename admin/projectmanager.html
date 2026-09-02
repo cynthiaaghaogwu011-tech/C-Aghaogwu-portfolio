@@ -165,7 +165,7 @@
                         <p class="text-xs sm:text-sm text-brand-textMuted">Manage and track the status of your active and past projects.</p>
                     </div>
                     
-                    <button class="px-5 py-3 bg-white text-[#080C14] font-mono text-xs tracking-wider uppercase font-bold hover:bg-neutral-200 transition-colors rounded-none flex items-center space-x-2">
+                    <button id="new-project-button" class="px-5 py-3 bg-white text-[#080C14] font-mono text-xs tracking-wider uppercase font-bold hover:bg-neutral-200 transition-colors rounded-none flex items-center space-x-2">
                         <span class="text-xs">+</span>
                         <span>New Project</span>
                     </button>
@@ -193,7 +193,57 @@
                     </button>
                 </section>
 
-                <!-- Responsive Project Table Block (Horizontally scrollable on small viewports) -->
+                <section id="project-form-container" class="hidden border border-brand-border bg-brand-card p-6">
+                    <h2 id="project-form-title" class="text-lg font-bold text-white mb-5">Create New Project</h2>
+                    <form id="project-form" class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-mono text-brand-textMuted uppercase mb-2">Project Title</label>
+                            <input type="text" id="project-title" name="title" required class="w-full px-4 py-3 bg-brand-bg border border-brand-border text-white text-sm focus:outline-none focus:border-slate-500" placeholder="Enter project title" >
+                        </div>
+                        <div>
+                            <label class="block text-xs font-mono text-brand-textMuted uppercase mb-2"> Project ID </label>
+                            <input type="text" id="project-id" name="projectId" required class="w-full px-4 py-3 bg-brand-bg border border-brand-border text-white text-sm focus:outline-none focus:border-slate-500" placeholder="PRJ-002">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-mono text-brand-textMuted uppercase mb-2"> Category</label>
+                            <input type="text" id="project-category" name="category" required class="w-full px-4 py-3 bg-brand-bg border border-brand-border text-white text-sm focus:outline-none focus:border-slate-500"  placeholder="Web Development">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-mono text-brand-textMuted uppercase mb-2"> Technologies</label>
+                            <input type="text" id="project-technologies" name="technologies" required class="w-full px-4 py-3 bg-brand-bg border border-brand-border text-white text-sm focus:outline-none focus:border-slate-500" placeholder="HTML, Tailwind CSS, JavaScript">
+                            <p class="mt-2 text-[10px] text-brand-textMuted"> Separate each technology with a comma.</p>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-mono text-brand-textMuted uppercase mb-2"> Status</label>
+                            <select id="project-status" name="status" required class="w-full px-4 py-3 bg-brand-bg border border-brand-border text-white text-sm focus:outline-none focus:border-slate-500">
+                                <option value="published">Published</option>
+                                <option value="draft">Draft</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-mono text-brand-textMuted uppercase mb-2"> Description</label>
+                            <textarea id="project-description" name="description" rows="4" class="w-full px-4 py-3 bg-brand-bg border border-brand-border text-white text-sm focus:outline-none focus:border-slate-500"  placeholder="Describe the project..."></textarea>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-mono text-brand-textMuted uppercase mb-2"> Image URL</label>
+                            <input type="text" id="project-image" name="image" class="w-full px-4 py-3 bg-brand-bg border border-brand-border text-white text-sm focus:outline-none focus:border-slate-500" placeholder="https://...">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-mono text-brand-textMuted uppercase mb-2"> Live URL</label>
+                            <input type="text" id="project-live-url" name="liveUrl" class="w-full px-4 py-3 bg-brand-bg border border-brand-border text-white text-sm focus:outline-none focus:border-slate-500" placeholder="https://..." >
+                        </div>
+                        <div>
+                            <label class="block text-xs font-mono text-brand-textMuted uppercase mb-2"> GitHub URL</label>
+                            <input type="text" id="project-github-url" name="githubUrl" class="w-full px-4 py-3 bg-brand-bg border border-brand-border text-white text-sm focus:outline-none focus:border-slate-500" placeholder="https://github.com/...">
+                        </div>
+                        <div class="flex gap-3 pt-2">
+                            <button type="submit" id="project-submit-button" class="px-5 py-3 bg-white text-[#080C14] font-mono text-xs uppercase font-bold hover:bg-neutral-200"> Create Project </button>
+                            <button type="button" id="cancel-project-button" class="px-5 py-3 border border-brand-border text-brand-textMuted font-mono text-xs uppercase font-bold hover:text-white hover:bg-[#151F32]/60" > Cancel</button>
+                        </div>
+                    </form>
+                </section>
+
+                <!--Project Table Block -->
                 <section class="border border-brand-border bg-brand-card overflow-x-auto rounded-none">
                     <table class="w-full text-left border-collapse text-xs sm:text-sm min-w-[700px]">
                         <thead>
@@ -205,94 +255,8 @@
                                 <th class="p-4 font-medium uppercase tracking-wider text-[10px] text-right">Actions</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-brand-border">
-                            <!-- Project Row 1 -->
-                            <tr class="hover:bg-white/[0.01] transition-colors">
-                                <td class="p-4 space-y-1">
-                                    <h6 class="font-bold text-white text-sm">Quantum Edge Analytics</h6>
-                                    <span class="block font-mono text-[9px] text-brand-textMuted uppercase">ID: PRJ-089</span>
-                                </td>
-                                <td class="p-4 text-brand-textMuted font-medium">FinTech Platform</td>
-                                <td class="p-4">
-                                    <div class="flex flex-wrap gap-1.5">
-                                        <span class="px-2.5 py-1 bg-[#080C14] text-[9px] font-mono text-brand-textMuted rounded-none">React</span>
-                                        <span class="px-2.5 py-1 bg-[#080C14] text-[9px] font-mono text-brand-textMuted rounded-none">Node.js</span>
-                                        <span class="px-2.5 py-1 bg-[#080C14] text-[9px] font-mono text-brand-textMuted rounded-none">PostgreSQL</span>
-                                    </div>
-                                </td>
-                                <td class="p-4">
-                                    <span class="flex items-center space-x-2 text-white font-medium text-xs">
-                                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-                                        <span>Published</span>
-                                    </span>
-                                </td>
-                                <td class="p-4 text-right">
-                                    <button class="text-brand-textMuted hover:text-white transition-colors">
-                                        <!-- Actions ellipsis -->
-                                        <svg class="w-5 h-5 ml-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM12.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM18.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
-                                        </svg>
-                                    </button>
-                                </td>
-                            </tr>
+                        <tbody id="project-list" class="divide-y divide-brand-border">
 
-                            <!-- Project Row 2 -->
-                            <tr class="hover:bg-white/[0.01] transition-colors">
-                                <td class="p-4 space-y-1">
-                                    <h6 class="font-bold text-white text-sm">Aura Design System</h6>
-                                    <span class="block font-mono text-[9px] text-brand-textMuted uppercase">ID: PRJ-092</span>
-                                </td>
-                                <td class="p-4 text-brand-textMuted font-medium">Internal Tooling</td>
-                                <td class="p-4">
-                                    <div class="flex flex-wrap gap-1.5">
-                                        <span class="px-2.5 py-1 bg-[#080C14] text-[9px] font-mono text-brand-textMuted rounded-none">Figma</span>
-                                        <span class="px-2.5 py-1 bg-[#080C14] text-[9px] font-mono text-brand-textMuted rounded-none">Tailwind</span>
-                                        <span class="px-2.5 py-1 bg-[#080C14] text-[9px] font-mono text-brand-textMuted rounded-none">Storybook</span>
-                                    </div>
-                                </td>
-                                <td class="p-4">
-                                    <span class="flex items-center space-x-2 text-brand-textMuted text-xs">
-                                        <span class="w-1.5 h-1.5 rounded-full border border-slate-500"></span>
-                                        <span>Draft</span>
-                                    </span>
-                                </td>
-                                <td class="p-4 text-right">
-                                    <button class="text-brand-textMuted hover:text-white transition-colors">
-                                        <svg class="w-5 h-5 ml-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM12.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM18.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
-                                        </svg>
-                                    </button>
-                                </td>
-                            </tr>
-
-                            <!-- Project Row 3 -->
-                            <tr class="hover:bg-white/[0.01] transition-colors">
-                                <td class="p-4 space-y-1">
-                                    <h6 class="font-bold text-white text-sm">Nebula Cloud Infrastructure</h6>
-                                    <span class="block font-mono text-[9px] text-brand-textMuted uppercase">ID: PRJ-095</span>
-                                </td>
-                                <td class="p-4 text-brand-textMuted font-medium">DevOps</td>
-                                <td class="p-4">
-                                    <div class="flex flex-wrap gap-1.5">
-                                        <span class="px-2.5 py-1 bg-[#080C14] text-[9px] font-mono text-brand-textMuted rounded-none">Terraform</span>
-                                        <span class="px-2.5 py-1 bg-[#080C14] text-[9px] font-mono text-brand-textMuted rounded-none">AWS</span>
-                                        <span class="px-2.5 py-1 bg-[#080C14] text-[9px] font-mono text-brand-textMuted rounded-none">Docker</span>
-                                    </div>
-                                </td>
-                                <td class="p-4">
-                                    <span class="flex items-center space-x-2 text-brand-textMuted text-xs">
-                                        <span class="w-1.5 h-1.5 rounded-full border border-slate-500"></span>
-                                        <span>Draft</span>
-                                    </span>
-                                </td>
-                                <td class="p-4 text-right">
-                                    <button class="text-brand-textMuted hover:text-white transition-colors">
-                                        <svg class="w-5 h-5 ml-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM12.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM18.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
-                                        </svg>
-                                    </button>
-                                </td>
-                            </tr>
                         </tbody>
                     </table>
                 </section>
@@ -328,6 +292,151 @@
                 sidebar.classList.add('-translate-x-full');
             }
         }
+
+        async function getProjects() {
+            const response = await fetch("http://localhost:3000/api/projects");  //Sends a request to backend and wait for the server to respond before continuing..
+            const result = await response.json();  //convert the response to javascript object that i can work with.
+            const projectList = document.getElementById("project-list");
+            projectList.innerHTML = "";  // Clear existing project rows before adding new ones.
+            console.log("PROJECT LIST:", projectList);
+            console.log(result);
+            result.data.forEach(project => {
+                const projectRow = document.createElement("tr");
+                    projectRow.innerHTML = `
+                        <td class="p-4">
+                            <h6 class="font-bold text-white text-sm">${project.title}</h6>
+                            <span class="block font-mono text-[9px] text-brand-textMuted uppercase"> ID: ${project.projectId}</span>
+                        </td>
+                        <td class="p-4 text-brand-textMuted font-medium">
+                            ${project.category}
+                        </td>
+                        <td class="p-4">
+                            <div class="flex flex-wrap gap-1.5">
+                                ${project.technologies.map(technology => `
+                                <span class="px-2.5 py-1 bg-[#080C14] text-[9px] font-mono text-brand-textMuted rounded-none">${technology}</span>
+                                `).join("")}
+                            </div>
+                        </td>
+                        <td class="p-4">
+                            <span class="text-brand-textMuted text-xs"> ${project.status}</span></td>
+                        <td class="p-4 text-right">
+                            <button onclick="editProject('${project._id}')" class="text-brand-textMuted hover:text-white transition-colors">Edit</button>
+                        </td>
+                        <button onclick="deleteProject('${project._id}')" class="text-brand-textMuted hover:text-white transition-colors">
+                            Delete
+                        </button>
+                    `;
+                projectList.appendChild(projectRow);
+            });
+        }
+        let editingProjectId = null;  // Variable to track the project being edited.
+        async function editProject(projectId) {
+            const response = await fetch(`http://localhost:3000/api/projects/${projectId}`);
+            const result = await response.json();
+            console.log("EDIT PROJECT RESULT:", result);
+            editingProjectId = result.data._id;  // Store the ID of the project being edited.;
+            document.getElementById("project-form-container").classList.remove("hidden");
+            document.getElementById("project-form-title").textContent = "Edit Project"; // Change form title to indicate edit action.
+            document.getElementById("project-submit-button").textContent = "Update Project"; // Change button text to indicate update action.
+            document.getElementById("project-title").value = result.data.title;
+            document.getElementById("project-id").value = result.data.projectId;
+            document.getElementById("project-category").value = result.data.category;
+            document.getElementById("project-technologies").value =
+                result.data.technologies.join(", ");
+            document.getElementById("project-status").value = result.data.status;
+            document.getElementById("project-description").value =
+                result.data.description;
+            document.getElementById("project-image").value = result.data.image;
+            document.getElementById("project-live-url").value =
+                result.data.liveUrl;
+            document.getElementById("project-github-url").value =
+                result.data.githubUrl;
+            }
+        async function deleteProject(projectId) {
+            const confirmed = confirm("Are you sure you want to delete this project?");
+                if (!confirmed) {
+                    return;
+                }
+            const response = await fetch( `http://localhost:3000/api/projects/${projectId}`,
+                {
+                    method: "DELETE",
+                    credentials: "include"
+                }
+            );
+            const result = await response.json();
+            console.log("DELETE RESULT:", result);
+                if (response.ok) {
+                getProjects();
+        }
+        }
+        getProjects();
+        document.getElementById("new-project-button").addEventListener("click", () => {
+            editingProjectId = null;
+            document.getElementById("project-form").reset();
+            document.getElementById("project-form-title").textContent = "Create New Project";
+            document.getElementById("project-submit-button").textContent = "Create Project";
+            
+            const formContainer = document.getElementById("project-form-container");
+            formContainer.classList.remove("hidden");
+        });
+        document.getElementById("project-form").addEventListener("submit", async (event) => { // Handle form submission
+            event.preventDefault();
+            const title = document.getElementById("project-title").value;
+            const projectId = document.getElementById("project-id").value;
+            const category = document.getElementById("project-category").value;
+            const technologies = document.getElementById("project-technologies").value;
+            const technologyArray = technologies .split(",").map(technology => technology.trim());
+            console.log("TECHNOLOGY ARRAY:", technologyArray);
+            const status = document.getElementById("project-status").value;
+            const description = document.getElementById("project-description").value;
+            const image = document.getElementById("project-image").value;
+            const liveUrl = document.getElementById("project-live-url").value;
+            const githubUrl = document.getElementById("project-github-url").value;
+            const projectData = {
+                title: title,
+                projectId: projectId,
+                category: category,
+                technologies: technologyArray,
+                status: status,
+                description: description,
+                image: image,
+                liveUrl: liveUrl,
+                githubUrl: githubUrl
+            };
+
+            let url = "http://localhost:3000/api/projects";
+            let method = "POST"; // Default to creating a new project.
+            if (editingProjectId) {
+                url = `http://localhost:3000/api/projects/${editingProjectId}`;
+                method = "PUT"; // Change to PUT for updating an existing project.
+            }
+            const response = await fetch(url, {
+                credentials: "include",
+                method: method,
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(projectData)
+            });
+            const result = await response.json();
+            console.log("PROJECT DATA:", projectData);
+            console.log("RESULT:", result);
+            if (response.ok) {
+                getProjects();  // Refresh the project list after successful creation.
+                document.getElementById("project-form").reset(); // Reset the form fields after submission.
+                editingProjectId = null; // Reset the editing state of the form after submission.
+                document.getElementById("project-form-title").textContent = "Create New Project";
+                document.getElementById("project-submit-button").textContent = "Create Project";
+                document.getElementById("project-form-container").classList.add("hidden"); // Hide the form after submission.
+            } else {
+                alert(result.message);
+            }
+            console.log("TITLE:", title);
+            console.log("PROJECT ID:", projectId);
+            console.log("CATEGORY:", category);
+            console.log("TECHNOLOGIES:", technologies);
+            console.log("STATUS:", status);
+        });
     </script>
 </body>
 </html>

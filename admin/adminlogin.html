@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CUA Admin — Sign In</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter (Sans-Serif) & JetBrains Mono (Monospace) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        brand: {
+                            bg: '#080C14',        /* Master dark backdrop */
+                            card: '#0D111A',      /* Dark slate navy containers */
+                            input: '#050910',     /* Ultra-deep dark input backdrop */
+                            border: '#151F32',    /* Thin structural border slate */
+                            textMuted: '#8E9BB0'  /* Readable slate details */
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #080C14;
+        }
+    </style>
+</head>
+<body class="font-sans text-white antialiased selection:bg-slate-800 selection:text-white min-h-screen flex flex-col justify-between">
+
+    <!-- Top spacer to help center the card vertically with balance -->
+    <div class="hidden sm:block"></div>
+
+    <!-- Centered Form Container -->
+    <main class="w-full max-w-sm mx-auto px-4 py-8 sm:py-12">
+        <div class="border border-brand-border bg-brand-card p-6 sm:p-10 space-y-8 rounded-none">
+            
+            <!-- Branding & Title Block -->
+            <div class="space-y-3 text-center sm:text-left">
+                <span class="block font-mono text-[10px] tracking-[0.25em] text-brand-textMuted uppercase font-semibold">
+                    CUA ADMIN // SECURE ACCESS
+                </span>
+                <div class="space-y-1">
+                    <h1 class="text-2xl sm:text-3xl font-bold tracking-tight text-white">Sign In</h1>
+                    <p class="text-xs sm:text-sm text-brand-textMuted">Enter your credentials to access the dashboard.</p>
+                </div>
+            </div>
+
+            <!-- Login Form -->
+            <form onsubmit="handleSignInSubmit(event)" class="space-y-5">
+                
+                <!-- Username / Email Input -->
+                <div class="space-y-2">
+                    <label class="block font-mono text-xs text-brand-textMuted uppercase tracking-wider"> Email</label>
+                    <input type="email" id="email" placeholder="admin@cua.io" required 
+                        class="w-full p-4 bg-brand-input border border-brand-border text-xs sm:text-sm text-white placeholder-slate-600 focus:outline-none focus:border-slate-500 rounded-none transition-colors">
+                </div>
+
+                <!-- Password Input with Inline Toggler -->
+                <div class="space-y-2">
+                    <div class="flex items-center justify-between">
+                        <label class="block font-mono text-xs text-brand-textMuted uppercase tracking-wider">Password</label>
+                        <!-- Plain text toggler trigger -->
+                        <button type="button" onclick="togglePasswordVisibility()" class="font-mono text-[10px] text-brand-textMuted hover:text-white transition-colors focus:outline-none select-none">
+                            SHOW
+                        </button>
+                    </div>
+                    <input type="password" id="password" placeholder="••••••••" required 
+                        class="w-full p-4 bg-brand-input border border-brand-border text-xs sm:text-sm text-white placeholder-slate-600 focus:outline-none focus:border-slate-500 rounded-none transition-colors">
+                </div>
+
+                <!-- Keep Me Signed In & Forgot Password links row -->
+                <div class="flex items-center justify-between text-xs font-mono">
+                    <label class="flex items-center space-x-2 text-brand-textMuted hover:text-white cursor-pointer select-none">
+                        <!-- Custom styled brutalist checkbox -->
+                        <input type="checkbox" class="sr-only peer">
+                        <div class="w-3.5 h-3.5 border border-brand-border bg-brand-input flex items-center justify-center peer-checked:bg-white peer-checked:border-white transition-all rounded-none">
+                            <svg class="w-2.5 h-2.5 text-brand-bg opacity-0 peer-checked:opacity-100" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                            </svg>
+                        </div>
+                        <span class="text-[10px] sm:text-xs">Keep me signed in</span>
+                    </label>
+
+                    <a href="#forgot" class="text-[10px] sm:text-xs text-brand-textMuted hover:text-white transition-colors">
+                        Forgot Password?
+                    </a>
+                </div>
+
+                <!-- Submission CTA Action -->
+                <button type="submit" class="w-full py-4 bg-white text-[#080C14] font-semibold text-xs sm:text-sm tracking-widest uppercase transition-all duration-200 hover:bg-neutral-200 active:scale-[0.99] rounded-none flex items-center justify-center space-x-2">
+                    <span>Sign In</span>
+                    <span class="text-xs">➔</span>
+                </button>
+
+            </form>
+
+            <!-- Bottom Request access helper link -->
+            <div class="text-center">
+                <span class="font-mono text-[10px] text-brand-textMuted uppercase tracking-wider">
+                    Need support? <a href="#support" class="text-white hover:underline">Contact Administrator</a>
+                </span>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Footer Copyright Statement -->
+    <footer class="py-8 border-t border-brand-border/60 shrink-0 text-center">
+        <span class="text-xs text-brand-textMuted font-mono">
+            © 2026 Cynthia .U. Aghaogwu. All rights reserved.
+        </span>
+    </footer>
+
+    <!-- Form Interactivity & Password Visibility Scripts -->
+    <script>
+        function togglePasswordVisibility() {
+            const passwordInput = document.getElementById('password');
+            const toggleButton = event.target;
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleButton.innerText = 'HIDE';
+            } else {
+                passwordInput.type = 'password';
+                toggleButton.innerText = 'SHOW';
+            }
+        }
+
+        async function handleSignInSubmit(event) {
+            event.preventDefault();
+            console.log("LOGIN FUNCTION IS RUNNING");
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+            const response = await fetch("http://127.0.0.1:3000/api/auth/login", {
+                method: "POST",
+                credentials: "include",
+                headers: {  //Telling express the data i'm sending is json.
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    email: email,
+                    password: password
+                })
+            });
+            const result = await response.json();
+
+            console.log("LOGIN RESULT:", result);
+            if (response.ok) {
+                window.location.href = "dashboard.html";
+            } else {
+                alert(result.message);
+            }
+        }
+    </script>
+</body>
+</html>
