@@ -10,6 +10,7 @@ const session = require("express-session");  //Loads the session package into my
 const contactRoutes = require("./routes/contactRoutes");
 const projectRoutes = require("./routes/projectRoutes");
 const authRoutes = require("./routes/authRoutes");
+const { MongoStore } = require("connect-mongo");
 
 
 const app = express(); //this creates the actual Express application.
@@ -22,7 +23,11 @@ app.use(
     session({
         secret: process.env.SESSION_SECRET,
         resave: false,
-        saveUninitialized: false
+        saveUninitialized: false,
+        store: MongoStore.create({
+            mongoUrl: process.env.MONGO_URI,
+            collectionName: "sessions",  //Save session data in a collection called "sessions" in the MongoDB database.
+        }),
     })
 );
 //JSON Middleware
