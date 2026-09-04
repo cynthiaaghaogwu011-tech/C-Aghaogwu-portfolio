@@ -124,8 +124,11 @@
         </span>
     </footer>
 
-    <!-- Form Interactivity & Password Visibility Scripts -->
     <script>
+        const API_BASE = window.location.hostname === "127.0.0.1"
+        ? "http://127.0.0.1:3000"
+        : "https://c-aghaogwu-backend.onrender.com";
+
         function togglePasswordVisibility() {
             const passwordInput = document.getElementById('password');
             const toggleButton = event.target;
@@ -144,7 +147,7 @@
             console.log("LOGIN FUNCTION IS RUNNING");
             const email = document.getElementById("email").value;
             const password = document.getElementById("password").value;
-            const response = await fetch("http://127.0.0.1:3000/api/auth/login", {
+            const response = await fetch(`${API_BASE}/api/auth/login`, {
                 method: "POST",
                 credentials: "include",
                 headers: {  //Telling express the data i'm sending is json.

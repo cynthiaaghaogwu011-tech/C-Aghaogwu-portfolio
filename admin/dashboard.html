@@ -321,8 +321,11 @@
         </main>
     </div>
 
-    <!-- Collapsible Sidebar Interactivity JavaScript -->
     <script>
+        const API_BASE = window.location.hostname === "127.0.0.1"
+        ? "http://127.0.0.1:3000"
+        : "https://c-aghaogwu-backend.onrender.com";
+
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');
             if (sidebar.classList.contains('-translate-x-full')) {
@@ -332,9 +335,13 @@
             }
         }
         async function checkAuthentication() {
-            const response = await fetch("http://127.0.0.1:3000/api/auth/check", {
-                credentials: "include"
+            const response = await fetch(`${API_BASE}/api/auth/check`, {
+                method: "GET",
+                credentials: "include",
+                cache: "no-store"  // Ensure we don't use cached responses for auth check
             });
+             console.log("AUTH STATUS:", response.status);
+            console.log("AUTH OK:", response.ok);
             if (!response.ok) {
                 window.location.href = "adminlogin.html";
                 return;
@@ -344,7 +351,7 @@
 
         document.addEventListener("DOMContentLoaded", async () => {  //Run this function when the page is loaded.
             const projectStatusList = document.getElementById("projectStatusList");
-            const response = await fetch("http://127.0.0.1:3000/api/projects", {
+            const response = await fetch(`${API_BASE}/api/projects`, {
                 credentials: "include"
             });
             const result = await response.json();
@@ -365,7 +372,7 @@
             const cardsHTML = cardsArray.join("");
             projectStatusList.innerHTML = cardsHTML;
 
-            const contactResponse = await fetch("http://127.0.0.1:3000/api/contact", {
+            const contactResponse = await fetch(`${API_BASE}/api/contact`, {
                 credentials: "include"
             });
             const contactResult = await contactResponse.json();
@@ -391,7 +398,7 @@
         });
 
         async function logoutAdmin() {
-            const response = await fetch("http://127.0.0.1:3000/api/auth/logout", {
+            const response = await fetch(`${API_BASE}/api/auth/logout`, {
                 method: "POST",
                 credentials: "include"
             });

@@ -282,8 +282,11 @@
         </main>
     </div>
 
-    <!-- JavaScript Collapsible Drawer Side Menu Logic -->
     <script>
+        const API_BASE = window.location.hostname === "127.0.0.1"
+            ? "http://127.0.0.1:3000/api" //Base URL for the backend API. This will be used to make requests to the server for project data.
+            : "https://c-aghaogwu-backend.onrender.com/api";
+
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');
             if (sidebar.classList.contains('-translate-x-full')) {
@@ -294,7 +297,9 @@
         }
 
         async function getProjects() {
-            const response = await fetch("http://localhost:3000/api/projects");  //Sends a request to backend and wait for the server to respond before continuing..
+            const response = await fetch(`${API_BASE}/projects`, { //Sends a request to backend and wait for the server to respond before continuing..
+                credentials: "include"  // Include cookies for session management.
+            });
             const result = await response.json();  //convert the response to javascript object that i can work with.
             const projectList = document.getElementById("project-list");
             projectList.innerHTML = "";  // Clear existing project rows before adding new ones.
@@ -331,7 +336,9 @@
         }
         let editingProjectId = null;  // Variable to track the project being edited.
         async function editProject(projectId) {
-            const response = await fetch(`http://localhost:3000/api/projects/${projectId}`);
+            const response = await fetch(`${API_BASE}/projects/${projectId}`, {
+                credentials: "include"
+            });
             const result = await response.json();
             console.log("EDIT PROJECT RESULT:", result);
             editingProjectId = result.data._id;  // Store the ID of the project being edited.;
@@ -357,7 +364,7 @@
                 if (!confirmed) {
                     return;
                 }
-            const response = await fetch( `http://localhost:3000/api/projects/${projectId}`,
+            const response = await fetch( `${API_BASE}/projects/${projectId}`,
                 {
                     method: "DELETE",
                     credentials: "include"
@@ -369,7 +376,10 @@
                 getProjects();
         }
         }
-        getProjects();
+        (async () => {
+            await checkAuthentication();
+            getProjects();
+        })();
         document.getElementById("new-project-button").addEventListener("click", () => {
             editingProjectId = null;
             document.getElementById("project-form").reset();
@@ -404,10 +414,9 @@
                 githubUrl: githubUrl
             };
 
-            let url = "http://localhost:3000/api/projects";
+            let url = `${API_BASE}/projects`;
             let method = "POST"; // Default to creating a new project.
-            if (editingProjectId) {
-                url = `http://localhost:3000/api/projects/${editingProjectId}`;
+            if (editingProjectId) { url = `${API_BASE}/projects/${editingProjectId}`;
                 method = "PUT"; // Change to PUT for updating an existing project.
             }
             const response = await fetch(url, {
@@ -437,6 +446,19 @@
             console.log("TECHNOLOGIES:", technologies);
             console.log("STATUS:", status);
         });
+
+        async function checkAuthentication() {
+            const response = await fetch(`${API_BASE}/auth/check`, { 
+                method: "GET",
+                credentials: "include",
+                cache: "no-store"
+            });
+            if (!response.ok) {
+                window.location.href = "adminlogin.html";
+                return;
+            }
+            console.log("Admin is authenticated.");
+        }
     </script>
 </body>
 </html>
