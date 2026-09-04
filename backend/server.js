@@ -16,7 +16,7 @@ const { MongoStore } = require("connect-mongo");
 const app = express(); //this creates the actual Express application.
 
 app.use(cors({
-    origin: "http://127.0.0.1:5500",  //Only allow requests coming from frontend running at this address.
+    origin: ["http://127.0.0.1:5500", "https://caghaogwu.netlify.app"],  //Only allow requests coming from frontend running at this address.
     credentials: true  //Allow the browser to send credentials such as cookies with those requests.
 }));
 app.use(
