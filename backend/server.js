@@ -11,10 +11,11 @@ const contactRoutes = require("./routes/contactRoutes");
 const projectRoutes = require("./routes/projectRoutes");
 const authRoutes = require("./routes/authRoutes");
 const { MongoStore } = require("connect-mongo");
-
+const helmet = require("helmet"); //Helmet is a collection of middleware functions that help secure my Express application by settling various HTTP headers. 
 
 const app = express(); //this creates the actual Express application.
 app.set("trust proxy", 1);
+app.use(helmet());
 app.use(cors({
     origin: ["http://127.0.0.1:5500", "https://caghaogwu.netlify.app"],  //Only allow requests coming from frontend running at this address.
     credentials: true  //Allow the browser to send credentials such as cookies with those requests.
