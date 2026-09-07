@@ -30,8 +30,8 @@ app.use(
         }),
          cookie: {
             httpOnly: true,
-            secure: true,
-            sameSite: "none",
+            secure: process.env.NODE_ENV === "production", //Onlysend cookies over HTTPS in production.
+            sameSite: process.env.NODE_ENV === "production" ? "none" : "lax", //In production allow cross-site cookies, in development allow same-site cookies.
         },
     })
 );

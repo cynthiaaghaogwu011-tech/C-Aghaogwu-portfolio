@@ -340,16 +340,21 @@
                 credentials: "include",
                 cache: "no-store"  // Ensure we don't use cached responses for auth check
             });
-             console.log("AUTH STATUS:", response.status);
+            console.log("AUTH STATUS:", response.status);
             console.log("AUTH OK:", response.ok);
             if (!response.ok) {
                 window.location.href = "adminlogin.html";
-                return;
+                return false;
             }
             console.log("Admin is authenticated.");
+            return true;
         }
 
         document.addEventListener("DOMContentLoaded", async () => {  //Run this function when the page is loaded.
+            const authenticated = await checkAuthentication();
+                if (!authenticated) {
+                return;
+            }
             const projectStatusList = document.getElementById("projectStatusList");
             const response = await fetch(`${API_BASE}/api/projects`, {
                 credentials: "include"
@@ -394,7 +399,7 @@
 
             const contactRowsHTML = contactRowsArray.join("");
             const inquiriesTableBody = document.getElementById("inquiriesTableBody");
-                inquiriesTableBody.innerHTML = contactRowsHTML;
+            inquiriesTableBody.innerHTML = contactRowsHTML;
         });
 
         async function logoutAdmin() {
@@ -409,7 +414,7 @@
                 alert(result.message);
             }
         }
-        checkAuthentication();
+
     </script>
 </body>
 </html>
