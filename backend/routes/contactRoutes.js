@@ -8,7 +8,7 @@ const {
     deleteContact,
     updateContact,
     sendReply
-} = require("../controllers/contactController");
+} = require("../controllers/contactController.js");
 
 router.post("/", contactValidationRules, handleValidationErrors, submitContact);  //When a post req comes to /( a path inside this router), hand it over to submitContact.
 router.post("/reply", isAuthenticated, sendReply);
