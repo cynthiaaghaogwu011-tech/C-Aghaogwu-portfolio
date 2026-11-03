@@ -17,7 +17,7 @@ const app = express(); //this creates the actual Express application.
 app.set("trust proxy", 1);
 app.use(helmet());
 app.use(cors({
-    origin: ["http://127.0.0.1:5500", "https://glowing-cuchufli-4f0f97.netlify.app"],  //Only allow requests coming from frontend running at this address.
+    origin: ["http://127.0.0.1:5500", "https://caghaogwu.netlify.app", "https://cynthiaaghaogwu.netlify.app"],  //Only allow requests coming from frontend running at this address.
     credentials: true  //Allow the browser to send credentials such as cookies with those requests.
 }));
 app.use(
