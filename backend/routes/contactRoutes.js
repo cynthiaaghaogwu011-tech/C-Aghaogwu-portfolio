@@ -2,6 +2,8 @@ const express = require("express");
 const router = express.Router(); //Creates router object specifically for contact-related routes.
 const isAuthenticated = require("../middleware/authMiddleware");
 const { contactValidationRules, handleValidationErrors } = require("../middleware/validateContact");
+const { contactLimiter } = require("../middleware/rateLimiter.js");
+const honeyPot = require("../middleware/honeyPot.js");
 const {
     submitContact,
     getContacts,
@@ -10,7 +12,7 @@ const {
     sendReply
 } = require("../controllers/contactController.js");
 
-router.post("/", contactValidationRules, handleValidationErrors, submitContact);  //When a post req comes to /( a path inside this router), hand it over to submitContact.
+router.post("/", contactLimiter, honeyPot, contactValidationRules, handleValidationErrors, submitContact);  //When a post req comes to /( a path inside this router), hand it over to submitContact.
 router.post("/reply", isAuthenticated, sendReply);
 router.get("/", isAuthenticated, getContacts);  
 router.put("/:id", isAuthenticated, updateContact);
