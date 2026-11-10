@@ -228,8 +228,8 @@
                             </div>
                         </div>
                         <div class="text-left sm:text-right font-mono text-[10px] text-brand-textMuted space-y-0.5">
-                            <span class="block">Oct 14, 2023, 10:42 AM</span>
-                            <span class="block text-brand-textMuted/70">(2 hours ago)</span>
+                            <span id="view-date" class="block"></span>
+                            <span id="view-ago" class="block text-brand-textMuted/70"></span>
                         </div>
                     </div>
 
@@ -243,7 +243,7 @@
                 <!-- Footer Text Reply input field box -->
                 <div class="p-6 border-t border-brand-border bg-[#0A0E17]/60 shrink-0">
                     <form onsubmit="handleSendReply(event)" class="border border-brand-border bg-brand-bg rounded-none">
-                        <textarea id="reply-input" rows="4" placeholder="Type your reply to Sarah Jenkins..." required class="w-full p-4 bg-transparent text-xs sm:text-sm text-white placeholder-slate-600 focus:outline-none resize-none"></textarea>                        
+                        <textarea id="reply-input" rows="4" placeholder=“Select a message to reply...” required class="w-full p-4 bg-transparent text-xs sm:text-sm text-white placeholder-slate-600 focus:outline-none resize-none"></textarea>                        
                         <!-- Mini toolbar panel -->
                         <div class="px-4 py-3 border-t border-brand-border/60 flex items-center justify-between">
                             <div class="flex items-center space-x-3 text-slate-500">
@@ -262,8 +262,7 @@
                             </div>
 
                             <button type="submit" class="px-5 py-2.5 bg-white text-[#080C14] font-mono text-xs tracking-wider uppercase font-bold hover:bg-neutral-200 transition-colors rounded-none flex items-center space-x-2">
-                                <span>Send Reply</span>
-                                <span class="text-[10px]">➔</span>
+                                <span>Send Reply</span><span class="text-[10px]">➔</span>
                             </button>
                         </div>
                     </form>
@@ -272,202 +271,251 @@
         </div>
     </div>
 
-    <script src="auth-guard.js"></script>
-    <script>
-        const API_BASE = window.location.hostname === "127.0.0.1"
+    <script src="authGuard.js"></script>
+<script>
+    const API_BASE = window.location.hostname === "127.0.0.1"
         ? "http://127.0.0.1:3000/api"
         : "https://c-aghaogwu-backend.onrender.com/api";
 
-        let selectedContactId = null;
-        let selectedContactRow = null;
-        let selectedContactEmail = null;
-        let currentFilter = "all";
-        
-        // Returning to inbox view on mobile
-        function backToList() {
-            const viewPanel = document.getElementById('message-view');
-            viewPanel.classList.add('hidden');
-            viewPanel.classList.remove('flex');
+    let allContacts = [];            // every contact from the server (the source of truth for counts)
+    let selectedContact = null;
+    let selectedContactId = null;
+    let selectedContactRow = null;
+    let selectedStatusEl = null;     // the status label inside the selected row
+    let selectedContactEmail = null;
+    let currentFilter = "all";
+
+    // Safe element builder: always uses textContent, never innerHTML
+    function makeEl(tag, className, text) {
+        const el = document.createElement(tag);
+        if (className) el.className = className;
+        if (text !== undefined) el.textContent = text;
+        return el;
+    }
+
+    // Old messages may have no status, so treat them as "new"
+    const statusOf = (contact) => contact.status || "new";
+
+    // Always shows both the total and the unread count
+    function updateCount() {
+        const unread = allContacts.filter(c => statusOf(c) === "new").length;
+        document.getElementById("contact-count").textContent =
+            `${allContacts.length} Contacts · ${unread} Unread`;
+    }
+
+    // Returning to inbox view on mobile
+    function backToList() {
+        const viewPanel = document.getElementById("message-view");
+        viewPanel.classList.add("hidden");
+        viewPanel.classList.remove("flex");
+    }
+
+    // Toggle left sidebar drawer
+    function toggleSidebar() {
+        document.getElementById("sidebar").classList.toggle("-translate-x-full");
+    }
+
+    // Reply message submission
+    async function handleSendReply(event) {
+        event.preventDefault();
+        const textarea = document.getElementById("reply-input");
+        const replyMessage = textarea.value;
+        const submitBtn = event.target.querySelector('button[type="submit"]');
+
+        // Remember who we are replying to, in case you click another message while this sends
+        const contactId = selectedContactId;
+        const contactEmail = selectedContactEmail;
+        const contact = selectedContact;
+        const statusEl = selectedStatusEl;
+
+        if (!contactId) {
+            alert("Please select a contact first.");
+            return;
+        }
+        if (!replyMessage.trim()) {
+            alert("Please enter a reply.");
+            return;
         }
 
-        // Toggle left sidebar drawer
-        function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            if (sidebar.classList.contains('-translate-x-full')) {
-                sidebar.classList.remove('-translate-x-full');
-            } else {
-                sidebar.classList.add('-translate-x-full');
-            }
-        }
+        submitBtn.innerHTML = `<span>SENDING...</span>`;
+        submitBtn.disabled = true;
 
-        // reply message submission
-        async function handleSendReply(event) {
-            event.preventDefault();
-            const textarea = document.getElementById('reply-input');
-            const replyMessage = textarea.value;
-            const submitBtn = event.target.querySelector('button[type="submit"]');               
-                if (!selectedContactId) {
-                    alert("Please select a contact first.");
-                    return;
-                }
-                if (!replyMessage.trim()) {
-                alert("Please enter a reply.");
-                    return;
-                }
-            submitBtn.innerHTML = `<span>SENDING...</span>`;
-            submitBtn.disabled = true;
-            try {
-                const response = await fetch(`${API_BASE}/contact/reply`, 
-                {
-                    credentials: "include",
-                    method: "POST",
-                    headers: {"Content-Type": "application/json"},
-                    body: JSON.stringify({
-                        contactId: selectedContactId,
-                        email: selectedContactEmail,
-                        message: replyMessage
-                    })
-                }
-            );
-                const data = await response.json();
-                    if (!response.ok) {
-                        throw new Error(data.message || "Failed to send reply.");
-                    }
-                const updateResponse = await fetch( `${API_BASE}/contact/${selectedContactId}`,
-                    {
-                        credentials: "include",
-                        method: "PUT",
-                        headers: {"Content-Type": "application/json"},
-                        body: JSON.stringify({
-                            status: "replied"
-                        })
-                    }
-                );
-                if (!updateResponse.ok) {
-                    throw new Error("Reply was sent, but the inquiry status could not be updated.");
-                }
-                    alert("Reply sent successfully!");
-                        textarea.value = "";
-                        submitBtn.innerHTML = `<span>SEND REPLY</span>`;
-                        submitBtn.disabled = false;
-            } catch (error) {
-                console.error("Reply error:", error);
-                alert("Failed to send reply: " + error.message);
-                submitBtn.innerHTML = `<span>SEND REPLY</span>`;
-                submitBtn.disabled = false;
-            }
-        }
-
-        async function selectContact(contact, contactRow) {
-            selectedContactId = contact._id;
-                const response = await fetch(`${API_BASE}/contact/${selectedContactId}`, {
-                    credentials: "include",
-                    method: "PUT",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({
-                    status: "read"
+        try {
+            const response = await fetch(`${API_BASE}/contact/reply`, {
+                credentials: "include",
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    contactId: contactId,
+                    email: contactEmail,
+                    message: replyMessage
                 })
             });
-            selectedContactEmail = contact.email;
+            const data = await response.json();
+            if (!response.ok) {
+                throw new Error(data.message || "Failed to send reply.");
+            }
 
-            document.getElementById("view-subject").innerText = "contact Inquiry";
-            document.getElementById("view-sender-name").innerText = contact.name;
-            document.getElementById("view-sender-meta").innerText = contact.email;
-            document.getElementById("view-body").innerText = contact.message;
-            document.getElementById("view-avatar").innerText = contact.name.charAt(0).toUpperCase();
-            document.getElementById("reply-input").placeholder = `Type your reply to ${contact.name}...`;
-            const viewPanel = document.getElementById("message-view");
-            viewPanel.classList.remove("hidden");
-            viewPanel.classList.add("flex");
+            const updateResponse = await fetch(`${API_BASE}/contact/${contactId}`, {
+                credentials: "include",
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ status: "replied" })
+            });
+            if (!updateResponse.ok) {
+                throw new Error("Reply was sent, but the inquiry status could not be updated.");
+            }
+
+            // Update the row and counts without reloading
+            contact.status = "replied";
+            if (statusEl) statusEl.textContent = "REPLIED";
+            updateCount();
+
+            alert("Reply sent successfully!");
+            textarea.value = "";
+        } catch (error) {
+            console.error("Reply error:", error);
+            alert("Failed to send reply: " + error.message);
+        } finally {
+            submitBtn.innerHTML = `<span>SEND REPLY</span>`;
+            submitBtn.disabled = false;
         }
+    }
 
-        document.getElementById("delete-contact-button").addEventListener("click", async() => {
-            if (!selectedContactId) {
-                alert("Please select a contact first.");
-                return;
-            }
-            const confirmed = confirm("Are you sure you want to delete this contact?");
-            if(!confirmed) {
-                return;
-            }
-            const response = await fetch(`${API_BASE}/contact/${selectedContactId}`,
-                {method: "DELETE", credentials: "include"}
-            );
-            const result = await response.json();
-            console.log(result);
+    async function selectContact(contact, contactRow, statusEl) {
+        selectedContact = contact;
+        selectedContactId = contact._id;
+        selectedContactRow = contactRow;
+        selectedStatusEl = statusEl;
+        selectedContactEmail = contact.email;
+
+        document.getElementById("view-subject").innerText = "Contact Inquiry";
+        document.getElementById("view-sender-name").innerText = contact.name;
+        document.getElementById("view-sender-meta").innerText = contact.email;
+        document.getElementById("view-body").innerText = contact.message;
+        document.getElementById("view-avatar").innerText = (contact.name || "?").charAt(0).toUpperCase();
+        document.getElementById("reply-input").placeholder = `Type your reply to ${contact.name}...`;
+
+        const viewPanel = document.getElementById("message-view");
+        viewPanel.classList.remove("hidden");
+        viewPanel.classList.add("flex");
+
+        // Only mark as read if it is still new (so "replied" is not overwritten)
+        if (statusOf(contact) !== "new") return;
+
+        try {
+            const response = await fetch(`${API_BASE}/contact/${contact._id}`, {
+                credentials: "include",
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ status: "read" })
+            });
             if (response.ok) {
-                selectedContactRow.remove();
-                const contactCount = document.getElementById("contact-count");
-                contactCount.innerText = `${document.querySelectorAll("#contact-list > div").length} Contacts`
+                // Update the row and counts right away
+                contact.status = "read";
+                statusEl.textContent = "READ";
+                updateCount();
+            } else {
+                console.error("Could not mark as read.");
+            }
+        } catch (error) {
+            console.error("Mark as read error:", error);
+        }
+    }
+
+    document.getElementById("delete-contact-button").addEventListener("click", async () => {
+        if (!selectedContactId) {
+            alert("Please select a contact first.");
+            return;
+        }
+        const confirmed = confirm("Are you sure you want to delete this contact?");
+        if (!confirmed) return;
+
+        const idToDelete = selectedContactId;
+
+        try {
+            const response = await fetch(`${API_BASE}/contact/${idToDelete}`, {
+                method: "DELETE",
+                credentials: "include"
+            });
+            if (response.ok) {
+                allContacts = allContacts.filter(c => c._id !== idToDelete);
+                if (selectedContactRow) selectedContactRow.remove();
+                updateCount();   // shows total and unread, whatever filter is active
+
+                selectedContact = null;
                 selectedContactId = null;
                 selectedContactRow = null;
+                selectedStatusEl = null;
+                selectedContactEmail = null;
+                backToList();
+            } else {
+                alert("Failed to delete contact.");
             }
-        });
-        async function getContacts() {
+        } catch (error) {
+            console.error("Delete error:", error);
+            alert("Failed to delete contact.");
+        }
+    });
+
+    async function getContacts() {
+        try {
             const response = await fetch(`${API_BASE}/contact`, { credentials: "include" });
+            if (!response.ok) {
+                if (response.status === 401) {
+                    window.location.href = "adminlogin.html";
+                }
+                return;
+            }
             const result = await response.json();
+            allContacts = result.data || [];
+
             const contactList = document.getElementById("contact-list");
             contactList.innerHTML = "";
-            const contactCount = document.getElementById("contact-count");
-            const unreadContacts = result.data.filter(contact => contact.status === "new");
-            let contactsToDisplay = result.data;
-            if (currentFilter === "unread") {
-                contactsToDisplay = unreadContacts;
-            }
-            contactCount.innerText = `${result.data.length} Contacts · ${unreadContacts.length} Unread`;
+
+            const contactsToDisplay = currentFilter === "unread"
+                ? allContacts.filter(c => statusOf(c) === "new")
+                : allContacts;
+
+            updateCount();
+
             contactsToDisplay.forEach(contact => {
                 const contactRow = document.createElement("div");
                 contactRow.className = "p-5 cursor-pointer hover:bg-[#151F32]/20 transition-colors space-y-2";
+
+                const statusEl = makeEl("span", "font-mono text-[9px] text-brand-textMuted", statusOf(contact).toUpperCase());
+
                 contactRow.addEventListener("click", () => {
-                    selectContact(contact, contactRow);
+                    selectContact(contact, contactRow, statusEl);
                 });
-                contactRow.innerHTML = ` 
-                    <div class="flex items-center justify-between">
-                        <span class="text-xs font-semibold text-white"> ${contact.name}</span>
-                        <span class="font-mono text-[9px] text-brand-textMuted"> ${(contact.status || "new").toUpperCase()} </span> 
-                    </div> 
-                    <h4 class="text-xs font-bold text-white tracking-tight"> Contact Inquiry </h4>
-                    <p class="text-[11px] text-brand-textMuted leading-normal line-clamp-2"> ${contact.message} </p>
-                    <div class="pt-1">
-                        <span class="px-2 py-0.5 bg-brand-bg border border-brand-border text-[9px] font-mono text-brand-textMuted uppercase rounded-none"> 
-                            ${contact.email}
-                        </span>
-                    </div>
-                `;
+
+                const top = makeEl("div", "flex items-center justify-between");
+                top.append(
+                    makeEl("span", "text-xs font-semibold text-white", contact.name),
+                    statusEl
+                );
+
+                const emailWrap = makeEl("div", "pt-1");
+                emailWrap.append(
+                    makeEl("span", "px-2 py-0.5 bg-brand-bg border border-brand-border text-[9px] font-mono text-brand-textMuted uppercase rounded-none", contact.email)
+                );
+
+                contactRow.append(
+                    top,
+                    makeEl("h4", "text-xs font-bold text-white tracking-tight", "Contact Inquiry"),
+                    makeEl("p", "text-[11px] text-brand-textMuted leading-normal line-clamp-2", contact.message),
+                    emailWrap
+                );
+
                 contactList.appendChild(contactRow);
             });
-
-            console.log(result);
+        } catch (error) {
+            console.error("Failed to load contacts:", error);
         }
+    }
 
-        (async () => {  //IIFE to check authentication on page load.
-            await checkAuthentication();
-            getContacts();
-        })();
-
-        document.getElementById("unread-filter").addEventListener("click", () => {
-            currentFilter = "unread";
-            updateFilterButtons();
-            getContacts();
-        });
-        document.getElementById("all-filter").addEventListener("click", () => {
-            currentFilter = "all";
-            updateFilterButtons();
-            getContacts();
-        });
-
-        function updateFilterButtons() {
-            const allButton = document.getElementById("all-filter");
-            const unreadButton = document.getElementById("unread-filter");
-            if (currentFilter === "all") {
-                allButton.className = "px-3 py-1 bg-white text-[#080C14] font-bold";
-                unreadButton.className = "px-3 py-1 border border-brand-border text-brand-textMuted hover:text-white hover:bg-white/5";
-            } else {
-                allButton.className = "px-3 py-1 border border-brand-border text-brand-textMuted hover:text-white hover:bg-white/5";
-                unreadButton.className = "px-3 py-1 bg-white text-[#080C14] font-bold";
-            }
-        }
-        async function checkAuthentication() {
+    async function checkAuthentication() {
+        try {
             const response = await fetch(`${API_BASE}/auth/check`, {
                 method: "GET",
                 credentials: "include",
@@ -475,10 +523,40 @@
             });
             if (!response.ok) {
                 window.location.href = "adminlogin.html";
-                return;
+                return false;
             }
-            console.log("Admin is authenticated.");
+            return true;
+        } catch (error) {
+            window.location.href = "adminlogin.html";
+            return false;
         }
-    </script>
+    }
+
+    function updateFilterButtons() {
+        const allButton = document.getElementById("all-filter");
+        const unreadButton = document.getElementById("unread-filter");
+        const active = "px-3 py-1 bg-white text-[#080C14] font-bold";
+        const inactive = "px-3 py-1 border border-brand-border text-brand-textMuted hover:text-white hover:bg-white/5";
+        allButton.className = currentFilter === "all" ? active : inactive;
+        unreadButton.className = currentFilter === "unread" ? active : inactive;
+    }
+
+    document.getElementById("unread-filter").addEventListener("click", () => {
+        currentFilter = "unread";
+        updateFilterButtons();
+        getContacts();
+    });
+    document.getElementById("all-filter").addEventListener("click", () => {
+        currentFilter = "all";
+        updateFilterButtons();
+        getContacts();
+    });
+
+    // Check authentication on page load, then load contacts
+    (async () => {
+        const ok = await checkAuthentication();
+        if (ok) getContacts();
+    })();
+</script>
 </body>
 </html>

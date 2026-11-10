@@ -282,184 +282,216 @@
         </main>
     </div>
 
-    <script src="auth-guard.js"></script>
-    <script>
-        const API_BASE = window.location.hostname === "127.0.0.1"
-            ? "http://127.0.0.1:3000/api" //Base URL for the backend API. This will be used to make requests to the server for project data.
-            : "https://c-aghaogwu-backend.onrender.com/api";
+    <script src="authGuard.js"></script>
+<script>
+    const API_BASE = window.location.hostname === "127.0.0.1"
+        ? "http://127.0.0.1:3000/api"
+        : "https://c-aghaogwu-backend.onrender.com/api";
 
-        function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            if (sidebar.classList.contains('-translate-x-full')) {
-                sidebar.classList.remove('-translate-x-full');
-            } else {
-                sidebar.classList.add('-translate-x-full');
-            }
-        }
+    let editingProjectId = null;
 
-        async function getProjects() {
-            const response = await fetch(`${API_BASE}/projects`, { //Sends a request to backend and wait for the server to respond before continuing..
-                credentials: "include"  // Include cookies for session management.
-            });
-            const result = await response.json();  //convert the response to javascript object that i can work with.
-            const projectList = document.getElementById("project-list");
-            projectList.innerHTML = "";  // Clear existing project rows before adding new ones.
-            console.log("PROJECT LIST:", projectList);
-            console.log(result);
-            result.data.forEach(project => {
-                const projectRow = document.createElement("tr");
-                    projectRow.innerHTML = `
-                        <td class="p-4">
-                            <h6 class="font-bold text-white text-sm">${project.title}</h6>
-                            <span class="block font-mono text-[9px] text-brand-textMuted uppercase"> ID: ${project.projectId}</span>
-                        </td>
-                        <td class="p-4 text-brand-textMuted font-medium">
-                            ${project.category}
-                        </td>
-                        <td class="p-4">
-                            <div class="flex flex-wrap gap-1.5">
-                                ${project.technologies.map(technology => `
-                                <span class="px-2.5 py-1 bg-[#080C14] text-[9px] font-mono text-brand-textMuted rounded-none">${technology}</span>
-                                `).join("")}
-                            </div>
-                        </td>
-                        <td class="p-4">
-                            <span class="text-brand-textMuted text-xs"> ${project.status}</span></td>
-                        <td class="p-4 text-right">
-                            <button onclick="editProject('${project._id}')" class="text-brand-textMuted hover:text-white transition-colors">Edit</button>
-                        </td>
-                        <button onclick="deleteProject('${project._id}')" class="text-brand-textMuted hover:text-white transition-colors">
-                            Delete
-                        </button>
-                    `;
-                projectList.appendChild(projectRow);
-            });
-        }
-        let editingProjectId = null;  // Variable to track the project being edited.
-        async function editProject(projectId) {
-            const response = await fetch(`${API_BASE}/projects/${projectId}`, {
-                credentials: "include"
-            });
-            const result = await response.json();
-            console.log("EDIT PROJECT RESULT:", result);
-            editingProjectId = result.data._id;  // Store the ID of the project being edited.;
-            document.getElementById("project-form-container").classList.remove("hidden");
-            document.getElementById("project-form-title").textContent = "Edit Project"; // Change form title to indicate edit action.
-            document.getElementById("project-submit-button").textContent = "Update Project"; // Change button text to indicate update action.
-            document.getElementById("project-title").value = result.data.title;
-            document.getElementById("project-id").value = result.data.projectId;
-            document.getElementById("project-category").value = result.data.category;
-            document.getElementById("project-technologies").value =
-                result.data.technologies.join(", ");
-            document.getElementById("project-status").value = result.data.status;
-            document.getElementById("project-description").value =
-                result.data.description;
-            document.getElementById("project-image").value = result.data.image;
-            document.getElementById("project-live-url").value =
-                result.data.liveUrl;
-            document.getElementById("project-github-url").value =
-                result.data.githubUrl;
-            }
-        async function deleteProject(projectId) {
-            const confirmed = confirm("Are you sure you want to delete this project?");
-                if (!confirmed) {
-                    return;
-                }
-            const response = await fetch( `${API_BASE}/projects/${projectId}`,
-                {
-                    method: "DELETE",
-                    credentials: "include"
-                }
-            );
-            const result = await response.json();
-            console.log("DELETE RESULT:", result);
-                if (response.ok) {
-                getProjects();
-        }
-        }
-        (async () => {
-            await checkAuthentication();
-            getProjects();
-        })();
-        document.getElementById("new-project-button").addEventListener("click", () => {
-            editingProjectId = null;
-            document.getElementById("project-form").reset();
-            document.getElementById("project-form-title").textContent = "Create New Project";
-            document.getElementById("project-submit-button").textContent = "Create Project";
-            
-            const formContainer = document.getElementById("project-form-container");
-            formContainer.classList.remove("hidden");
-        });
-        document.getElementById("project-form").addEventListener("submit", async (event) => { // Handle form submission
-            event.preventDefault();
-            const title = document.getElementById("project-title").value;
-            const projectId = document.getElementById("project-id").value;
-            const category = document.getElementById("project-category").value;
-            const technologies = document.getElementById("project-technologies").value;
-            const technologyArray = technologies .split(",").map(technology => technology.trim());
-            console.log("TECHNOLOGY ARRAY:", technologyArray);
-            const status = document.getElementById("project-status").value;
-            const description = document.getElementById("project-description").value;
-            const image = document.getElementById("project-image").value;
-            const liveUrl = document.getElementById("project-live-url").value;
-            const githubUrl = document.getElementById("project-github-url").value;
-            const projectData = {
-                title: title,
-                projectId: projectId,
-                category: category,
-                technologies: technologyArray,
-                status: status,
-                description: description,
-                image: image,
-                liveUrl: liveUrl,
-                githubUrl: githubUrl
-            };
+    // Safe element builder: always uses textContent, never innerHTML
+    function makeEl(tag, className, text) {
+        const el = document.createElement(tag);
+        if (className) el.className = className;
+        if (text !== undefined) el.textContent = text;
+        return el;
+    }
 
-            let url = `${API_BASE}/projects`;
-            let method = "POST"; // Default to creating a new project.
-            if (editingProjectId) { url = `${API_BASE}/projects/${editingProjectId}`;
-                method = "PUT"; // Change to PUT for updating an existing project.
-            }
-            const response = await fetch(url, {
-                credentials: "include",
-                method: method,
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(projectData)
-            });
-            const result = await response.json();
-            console.log("PROJECT DATA:", projectData);
-            console.log("RESULT:", result);
-            if (response.ok) {
-                getProjects();  // Refresh the project list after successful creation.
-                document.getElementById("project-form").reset(); // Reset the form fields after submission.
-                editingProjectId = null; // Reset the editing state of the form after submission.
-                document.getElementById("project-form-title").textContent = "Create New Project";
-                document.getElementById("project-submit-button").textContent = "Create Project";
-                document.getElementById("project-form-container").classList.add("hidden"); // Hide the form after submission.
-            } else {
-                alert(result.message);
-            }
-            console.log("TITLE:", title);
-            console.log("PROJECT ID:", projectId);
-            console.log("CATEGORY:", category);
-            console.log("TECHNOLOGIES:", technologies);
-            console.log("STATUS:", status);
-        });
+    function toggleSidebar() {
+        document.getElementById("sidebar").classList.toggle("-translate-x-full");
+    }
 
-        async function checkAuthentication() {
-            const response = await fetch(`${API_BASE}/auth/check`, { 
+    async function checkAuthentication() {
+        try {
+            const response = await fetch(`${API_BASE}/auth/check`, {
                 method: "GET",
                 credentials: "include",
                 cache: "no-store"
             });
             if (!response.ok) {
                 window.location.href = "adminlogin.html";
+                return false;
+            }
+            return true;
+        } catch (error) {
+            window.location.href = "adminlogin.html";
+            return false;
+        }
+    }
+
+    async function getProjects() {
+        try {
+            const response = await fetch(`${API_BASE}/projects`, { credentials: "include" });
+            if (!response.ok) {
+                if (response.status === 401) window.location.href = "adminlogin.html";
                 return;
             }
-            console.log("Admin is authenticated.");
+            const result = await response.json();
+            const projects = result.data || [];
+
+            const projectList = document.getElementById("project-list");
+            projectList.innerHTML = "";
+
+            projects.forEach(project => {
+                const row = document.createElement("tr");
+
+                // Title + ID
+                const titleCell = makeEl("td", "p-4");
+                titleCell.append(
+                    makeEl("h6", "font-bold text-white text-sm", project.title),
+                    makeEl("span", "block font-mono text-[9px] text-brand-textMuted uppercase", `ID: ${project.projectId}`)
+                );
+
+                // Category
+                const categoryCell = makeEl("td", "p-4 text-brand-textMuted font-medium", project.category);
+
+                // Technologies
+                const techCell = makeEl("td", "p-4");
+                const techWrap = makeEl("div", "flex flex-wrap gap-1.5");
+                (project.technologies || []).forEach(technology => {
+                    techWrap.append(
+                        makeEl("span", "px-2.5 py-1 bg-[#080C14] text-[9px] font-mono text-brand-textMuted rounded-none", technology)
+                    );
+                });
+                techCell.append(techWrap);
+
+                // Status
+                const statusCell = makeEl("td", "p-4");
+                statusCell.append(makeEl("span", "text-brand-textMuted text-xs", project.status));
+
+                // Actions
+                const actionCell = makeEl("td", "p-4 text-right");
+                const editBtn = makeEl("button", "text-brand-textMuted hover:text-white transition-colors", "Edit");
+                editBtn.addEventListener("click", () => editProject(project._id));
+                const deleteBtn = makeEl("button", "text-brand-textMuted hover:text-white transition-colors ml-4", "Delete");
+                deleteBtn.addEventListener("click", () => deleteProject(project._id));
+                actionCell.append(editBtn, deleteBtn);
+
+                row.append(titleCell, categoryCell, techCell, statusCell, actionCell);
+                projectList.appendChild(row);
+            });
+        } catch (error) {
+            console.error("Failed to load projects:", error);
         }
-    </script>
+    }
+
+    async function editProject(projectId) {
+        try {
+            const response = await fetch(`${API_BASE}/projects/${projectId}`, {
+                credentials: "include"
+            });
+            if (!response.ok) {
+                alert("Could not load this project.");
+                return;
+            }
+            const result = await response.json();
+            const project = result.data;
+
+            editingProjectId = project._id;
+            document.getElementById("project-form-container").classList.remove("hidden");
+            document.getElementById("project-form-title").textContent = "Edit Project";
+            document.getElementById("project-submit-button").textContent = "Update Project";
+            document.getElementById("project-title").value = project.title || "";
+            document.getElementById("project-id").value = project.projectId || "";
+            document.getElementById("project-category").value = project.category || "";
+            document.getElementById("project-technologies").value = (project.technologies || []).join(", ");
+            document.getElementById("project-status").value = project.status || "";
+            document.getElementById("project-description").value = project.description || "";
+            document.getElementById("project-image").value = project.image || "";
+            document.getElementById("project-live-url").value = project.liveUrl || "";
+            document.getElementById("project-github-url").value = project.githubUrl || "";
+        } catch (error) {
+            console.error("Edit project error:", error);
+            alert("Could not load this project.");
+        }
+    }
+
+    async function deleteProject(projectId) {
+        const confirmed = confirm("Are you sure you want to delete this project?");
+        if (!confirmed) return;
+
+        try {
+            const response = await fetch(`${API_BASE}/projects/${projectId}`, {
+                method: "DELETE",
+                credentials: "include"
+            });
+            if (response.ok) {
+                getProjects();
+            } else {
+                alert("Failed to delete project.");
+            }
+        } catch (error) {
+            console.error("Delete project error:", error);
+            alert("Failed to delete project.");
+        }
+    }
+
+    document.getElementById("new-project-button").addEventListener("click", () => {
+        editingProjectId = null;
+        document.getElementById("project-form").reset();
+        document.getElementById("project-form-title").textContent = "Create New Project";
+        document.getElementById("project-submit-button").textContent = "Create Project";
+        document.getElementById("project-form-container").classList.remove("hidden");
+    });
+
+    document.getElementById("project-form").addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        const technologyArray = document.getElementById("project-technologies").value
+            .split(",")
+            .map(technology => technology.trim())
+            .filter(Boolean);
+
+        const projectData = {
+            title: document.getElementById("project-title").value,
+            projectId: document.getElementById("project-id").value,
+            category: document.getElementById("project-category").value,
+            technologies: technologyArray,
+            status: document.getElementById("project-status").value,
+            description: document.getElementById("project-description").value,
+            image: document.getElementById("project-image").value,
+            liveUrl: document.getElementById("project-live-url").value,
+            githubUrl: document.getElementById("project-github-url").value
+        };
+
+        let url = `${API_BASE}/projects`;
+        let method = "POST";
+        if (editingProjectId) {
+            url = `${API_BASE}/projects/${editingProjectId}`;
+            method = "PUT";
+        }
+
+        try {
+            const response = await fetch(url, {
+                credentials: "include",
+                method: method,
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(projectData)
+            });
+            const result = await response.json();
+
+            if (response.ok) {
+                getProjects();
+                document.getElementById("project-form").reset();
+                editingProjectId = null;
+                document.getElementById("project-form-title").textContent = "Create New Project";
+                document.getElementById("project-submit-button").textContent = "Create Project";
+                document.getElementById("project-form-container").classList.add("hidden");
+            } else {
+                alert(result.message || "Could not save the project.");
+            }
+        } catch (error) {
+            console.error("Save project error:", error);
+            alert("Could not save the project.");
+        }
+    });
+
+    // Check authentication on page load, then load projects
+    (async () => {
+        const ok = await checkAuthentication();
+        if (ok) getProjects();
+    })();
+</script>
 </body>
 </html>

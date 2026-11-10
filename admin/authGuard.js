@@ -5,7 +5,6 @@
 
     // Hide the page until the backend confirms the admin is logged in
     document.documentElement.style.visibility = "hidden";
-
     async function verifyAdmin() {
         try {
             const response = await fetch(`${API_BASE}/api/auth/check`, {
@@ -19,6 +18,7 @@
             window.location.replace("adminlogin.html");
         }
     }
+
     verifyAdmin();
     // Re-check when the browser restores a page from its cache (back button after logout)
     window.addEventListener("pageshow", (event) => {
