@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CUA Admin — Sign In</title>
+    <title>CUA Admin  Sign In</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts: Inter (Sans-Serif) & JetBrains Mono (Monospace) -->
@@ -73,7 +73,7 @@
                     <div class="flex items-center justify-between">
                         <label class="block font-mono text-xs text-brand-textMuted uppercase tracking-wider">Password</label>
                         <!-- Plain text toggler trigger -->
-                        <button type="button" onclick="togglePasswordVisibility()" class="font-mono text-[10px] text-brand-textMuted hover:text-white transition-colors focus:outline-none select-none">
+                        <button type="button" onclick="togglePasswordVisibility(this)" class="font-mono text-[10px] text-brand-textMuted hover:text-white transition-colors focus:outline-none select-none">
                             SHOW
                         </button>
                     </div>
@@ -120,7 +120,7 @@
     <!-- Footer Copyright Statement -->
     <footer class="py-8 border-t border-brand-border/60 shrink-0 text-center">
         <span class="text-xs text-brand-textMuted font-mono">
-            © 2026 Cynthia .U. Aghaogwu. All rights reserved.
+            © Cynthia .U. Aghaogwu. All rights reserved.
         </span>
     </footer>
 
@@ -129,10 +129,8 @@
         ? "http://127.0.0.1:3000"
         : "https://c-aghaogwu-backend.onrender.com";
 
-        function togglePasswordVisibility() {
+        function togglePasswordVisibility(toggleButton) {
             const passwordInput = document.getElementById('password');
-            const toggleButton = event.target;
-            
             if (passwordInput.type === 'password') {
                 passwordInput.type = 'text';
                 toggleButton.innerText = 'HIDE';
@@ -159,8 +157,6 @@
                 })
             });
             const result = await response.json();
-
-            console.log("LOGIN RESULT:", result);
             if (response.ok) {
                 window.location.href = "dashboard.html";
             } else {
