@@ -377,7 +377,7 @@
             console.error("Reply error:", error);
             alert("Failed to send reply: " + error.message);
         } finally {
-            submitBtn.innerHTML = `<span>SEND REPLY</span>`;
+            submitBtn.innerHTML = `<span>Send Reply</span><span class="text-[10px]">➔</span>`;
             submitBtn.disabled = false;
         }
     }
@@ -394,6 +394,12 @@
         document.getElementById("view-sender-meta").innerText = contact.email;
         document.getElementById("view-body").innerText = contact.message;
         document.getElementById("view-avatar").innerText = (contact.name || "?").charAt(0).toUpperCase();
+        const dateEl = document.getElementById("view-date");
+        if (dateEl) {
+            dateEl.textContent = contact.createdAt
+            ? new Date(contact.createdAt).toLocaleString()
+            : "";
+        }
         document.getElementById("reply-input").placeholder = `Type your reply to ${contact.name}...`;
 
         const viewPanel = document.getElementById("message-view");

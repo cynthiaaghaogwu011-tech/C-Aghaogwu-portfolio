@@ -117,45 +117,51 @@
         </span>
     </footer>
 
-    <script>
-        const API_BASE = window.location.hostname === "127.0.0.1"
-        ? "http://127.0.0.1:3000"
-        : "https://c-aghaogwu-backend.onrender.com";
+    <script>const API_BASE = window.location.hostname === "127.0.0.1"
+    ? "http://127.0.0.1:3000"
+    : "https://c-aghaogwu-backend.onrender.com";
 
-        function togglePasswordVisibility(toggleButton) {
-            const passwordInput = document.getElementById('password');
-            if (passwordInput.type === 'password') {
-                passwordInput.type = 'text';
-                toggleButton.innerText = 'HIDE';
-            } else {
-                passwordInput.type = 'password';
-                toggleButton.innerText = 'SHOW';
-            }
-        }
+function togglePasswordVisibility(toggleButton) {
+    const passwordInput = document.getElementById('password');
+    if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        toggleButton.innerText = 'HIDE';
+    } else {
+        passwordInput.type = 'password';
+        toggleButton.innerText = 'SHOW';
+    }
+}
 
-        async function handleSignInSubmit(event) {
-            event.preventDefault();
-            console.log("LOGIN FUNCTION IS RUNNING");
-            const email = document.getElementById("email").value;
-            const password = document.getElementById("password").value;
-            const response = await fetch(`${API_BASE}/api/auth/login`, {
-                method: "POST",
-                credentials: "include",
-                headers: {  //Telling express the data i'm sending is json.
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    email: email,
-                    password: password
-                })
-            });
-            const result = await response.json();
-            if (response.ok) {
-                window.location.href = "dashboard.html";
-            } else {
-                alert(result.message);
-            }
+async function handleSignInSubmit(event) {
+    event.preventDefault();
+    const form = event.target;
+    const btn = form.querySelector('button[type="submit"]');
+    const originalText = btn.textContent;
+
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+    btn.disabled = true;
+    btn.textContent = "Signing in...";
+    try {
+        const response = await fetch(`${API_BASE}/api/auth/login`, {
+            method: "POST",
+            credentials: "include",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email, password }),
+        });
+        const result = await response.json();
+        if (response.ok) {
+            window.location.href = "dashboard.html";
+            return; // the button stays disabled while the page changes
         }
+        alert(result.message);
+    } catch (error) {
+        alert("Could not connect to the server. Please try again in a moment.");
+    }
+    // Only reached if login failed, so user can try again
+    btn.disabled = false;
+    btn.textContent = originalText;
+}
     </script>
 </body>
 </html>

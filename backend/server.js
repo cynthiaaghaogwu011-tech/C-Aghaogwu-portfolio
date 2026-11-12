@@ -1,3 +1,5 @@
+const dns = require("node:dns");
+dns.setServers(["8.8.8.8", "1.1.1.1"]);
 //Server.js starts the express application.
 require("dotenv").config();  //Load dotenv and call dotenv's config function. (config() reads the .env file and loads the values into process.env).
 const { Resend } = require("resend"); //Load resend tool from installed resend package.
@@ -17,7 +19,7 @@ const app = express(); //this creates the actual Express application.
 app.set("trust proxy", 1);
 app.use(helmet());
 app.use(cors({
-    origin: ["http://127.0.0.1:5500", "https://caghaogwu.netlify.app", "https://cynthiaaghaogwu.netlify.app"],  //Only allow requests coming from frontend running at this address.
+    origin: ["http://127.0.0.1:5500", "http://127.0.0.1:5501", "https://caghaogwu.netlify.app", "https://cynthiaaghaogwu.netlify.app"],  //Only allow requests coming from frontend running at this address.
     credentials: true  //Allow the browser to send credentials such as cookies with those requests.
 }));
 app.use(

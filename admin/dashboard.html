@@ -326,6 +326,7 @@
         const API_BASE = window.location.hostname === "127.0.0.1"
         ? "http://127.0.0.1:3000"
         : "https://c-aghaogwu-backend.onrender.com";
+        
 
         function escapeHtml(value) {
             return String(value ?? "")
@@ -346,8 +347,6 @@
         }
 
         document.addEventListener("DOMContentLoaded", async () => {
-            const authenticated = await checkAuthentication();
-            if (!authenticated) return;
             try {
                 // Projects
                 const projectStatusList = document.getElementById("projectStatusList");
